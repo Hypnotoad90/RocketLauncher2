@@ -5,6 +5,7 @@
 #include <QFileInfo>
 #include <QString>
 #include <QtDebug>
+#include <QFileDialog>
 
 //=========================ENGINES================================
 
@@ -16,7 +17,7 @@ EngineListModel::EngineListModel(QObject *parent) :
     m_mainAppPath = QApplication::applicationDirPath();
 }
 
-int EngineListModel::rowCount(const QModelIndex &parent) const {
+int EngineListModel::rowCount(const QModelIndex &) const {
     return Engines_.count();
 }
 
@@ -109,6 +110,11 @@ QString EngineListModel::addEngine(QFileInfo file)
     {
         return updateEngine("Doom Retro", file.absoluteFilePath(), Engine_Default, Pic_Retro, true);
     }
+    else if (file.baseName().left(6).compare(QString("dosbox"), Qt::CaseInsensitive) == 0)
+    {
+        setupDosbox(file.absoluteFilePath());
+        return "Success";
+    }
     else
     {
         return updateEngine(file.baseName(), file.absoluteFilePath(), Engine_Default, Pic_Default, false);
@@ -155,7 +161,11 @@ QVariant EngineListModel::data(const QModelIndex& index, int role) const {
     if (role == Qt::DisplayRole) {
         // Only returns something for the roles you support (DisplayRole is a minimum)
         return QVariant(Engines_.at(index.row()).name);
-    } else {
+    }
+    else if (role == Qt::UserRole) {
+        return QVariant(Engines_.at(index.row()).path);
+    }
+    else {
         return QVariant();
     }
 }
@@ -187,6 +197,8 @@ void EngineListModel::LoadEngineData()
         Engines_.append(newengine);
     }
     EngineSettings.endArray();
+    if (EngineSettings.contains("doomexe"))
+        DoomExePath = EngineSettings.value("doomexe").toString();
     emit dataChanged(QModelIndex(),QModelIndex());
     int lastIndex = EngineSettings.value("Last Index").toInt();
     setCurrentEngine(lastIndex);
@@ -205,12 +217,149 @@ void EngineListModel::SaveEngineData()
         EngineSettings.setValue("image", static_cast<int>(Engines_.at(i).EngineImage));
     }
     EngineSettings.endArray();
+    if (DoomExePath != "" && DoomExePath != NULL)
+        EngineSettings.setValue("doomexe",DoomExePath);
 }
 
 EngineType EngineListModel::getEngineType()
 {
     return selectedEngine_->type;
 }
+
+EngineType EngineListModel::getEngineTypeFromIndex(const QModelIndex &index)
+{
+    return Engines_.at(index.row()).type;
+}
+
+EnginePic EngineListModel::getEnginePicFromIndex(const QModelIndex &index)
+{
+    return Engines_.at(index.row()).EngineImage;
+}
+
+void EngineListModel::setupDosbox(QString path)
+{
+    int searchResult;
+    searchResult = SearchEngines("DOSBox");
+    if (searchResult > -1)
+    {
+        Engines_[searchResult].path = path;
+        QMessageBox::information(NULL,"DOSBox Executable Updated", QString("DOSBox engine updated, now find your original iD Engine executable (e.g. DOOM2.EXE)"));
+        emit updateCombo("DOSBox");
+        emit dataChanged(QModelIndex(),QModelIndex());
+        setDoomExe();
+        SaveEngineData();
+        return;
+    }
+    EngineInfo newengine = {path, "DOSBox", Engine_DosBox, Pic_Default};
+    Engines_ << newengine;
+    QMessageBox::information(NULL,"Executable Added",QString("DOSBox engine added. You must now find your original iD Engine executable (e.g. DOOM2.EXE)"));
+    setDoomExe();
+    emit updateCombo("DOSBox");
+    emit dataChanged(QModelIndex(),QModelIndex());
+    SaveEngineData();
+
+}
+
+void EngineListModel::setDoomExe()
+{
+    QString tempPath = QFileDialog::getOpenFileName(NULL, "Find your original iD Engine executable (e.g. DOOM2.EXE)");
+    QFileInfo doomfile(tempPath);
+    if (!doomfile.exists())
+    {
+        QMessageBox::warning(NULL,"Error",QString("Failed to add iD executable!"));
+        return;
+    }
+    DoomExePath = tempPath;
+    QString n = doomfile.baseName();
+    if (n.left(4).compare("doom", Qt::CaseInsensitive) == 0
+            || n.left(5).compare("doom2", Qt::CaseInsensitive) == 0
+            || n.left(7).compare("heretic", Qt::CaseInsensitive) == 0
+            || n.left(5).compare("hexen", Qt::CaseInsensitive) == 0
+            || n.left(6).compare("strife", Qt::CaseInsensitive) == 0
+            || n.left(4).compare("chex", Qt::CaseInsensitive) == 0
+            || n.left(4).compare("hacx", Qt::CaseInsensitive) == 0 )
+    {
+        QMessageBox::information(NULL, "Original Exectuble Set" , QString("iD executable set to %1").arg(n));
+    }
+    else
+    {
+        QMessageBox::information(NULL, "Unrecognized Original Exectuble Set" , QString("iD executable set to an unrecognized file!"));
+    }
+}
+
+void EngineListModel::removeRow(int row, const QModelIndex &parent)
+{
+    Engines_.removeAt(row);
+    QAbstractListModel::removeRow(row, parent);
+}
+
+void EngineListModel::addDefaultEngine(QString path)
+{
+    QFileInfo tempfile(path);
+    if (!tempfile.exists())
+    {
+        QMessageBox::information(NULL,"Error",QString("Failed to add executable."));
+        return;
+    }
+    EngineInfo newengine = {path, "Custom engine", Engine_Default, Pic_Default};
+    Engines_ << newengine;
+    QMessageBox::information(NULL,"Executable Added",QString("Custom engine added!"));
+    emit updateCombo("Custom engine");
+    emit dataChanged(QModelIndex(),QModelIndex());
+    SaveEngineData();
+}
+
+void EngineListModel::setNameFromIndex(QString name, const QModelIndex &index)
+{
+    if (!index.isValid())
+        return;
+    if (index.row() >= Engines_.size())
+        return;
+    Engines_[index.row()].name = name;
+    emit dataChanged(QModelIndex(),QModelIndex());
+    SaveEngineData();
+}
+
+void EngineListModel::setPathFromIndex(QString path, const QModelIndex &index)
+{
+    if (!index.isValid())
+        return;
+    if (index.row() >= Engines_.size())
+        return;
+    Engines_[index.row()].path = path;
+    emit dataChanged(QModelIndex(),QModelIndex());
+    SaveEngineData();
+}
+
+void EngineListModel::setTypeFromIndex(EngineType type, const QModelIndex &index)
+{
+    if (!index.isValid())
+        return;
+    if (index.row() >= Engines_.size())
+        return;
+    Engines_[index.row()].type = type;
+    emit dataChanged(QModelIndex(),QModelIndex());
+    SaveEngineData();
+}
+
+void EngineListModel::setPicFromIndex(EnginePic pic, const QModelIndex &index)
+{
+    if (!index.isValid())
+        return;
+    if (index.row() >= Engines_.size())
+        return;
+    Engines_[index.row()].EngineImage = pic;
+    emit dataChanged(QModelIndex(),QModelIndex());
+    SaveEngineData();
+}
+
+void EngineListModel::setDoomExeSave()
+{
+    setDoomExe();
+    if (DoomExePath != "" && DoomExePath != NULL)
+        EngineSettings.setValue("doomexe",DoomExePath);
+}
+
 //========================Configs=======================
 
 

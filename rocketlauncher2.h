@@ -86,6 +86,24 @@ private slots:
 
     void on_button_delConfig_clicked();
 
+    void on_button_detectEng_clicked();
+
+    void on_button_removeEng_clicked();
+
+    void on_listbox_engines_clicked(const QModelIndex &index);
+
+    void on_button_addCustEng_clicked();
+
+    void on_input_selEngName_returnPressed();
+
+    void on_button_selEngBrowse_clicked();
+
+    void on_combo_EngType_currentTextChanged(const QString &arg1);
+
+    void on_combo_EngPic_currentTextChanged(const QString &arg1);
+
+    void on_button_idExeBrowse_clicked();
+
 private:
     Ui::RocketLauncher2 *ui;
     QString m_settingsfile;
@@ -111,6 +129,7 @@ private:
     void updateIWADs(QString filepath, bool save);
     void updateres(QString filepath, bool save);
     void initListViews();
+    QStringList genDOSBoxcmd();
 
     //configs
     RocketFile makeConfigFromCurrent(QString name);

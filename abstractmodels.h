@@ -72,6 +72,18 @@ public:
     bool EngineSet;
     void LoadEngineData();
     EngineType getEngineType();
+    QString DoomExePath;
+    void removeRow(int row, const QModelIndex &parent = QModelIndex());
+    QSettings EngineSettings;
+    void SaveEngineData();
+    EngineType getEngineTypeFromIndex(const QModelIndex &index);
+    EnginePic getEnginePicFromIndex(const QModelIndex &index);
+    void addDefaultEngine(QString path);
+    void setNameFromIndex(QString name, const QModelIndex &index);
+    void setPathFromIndex(QString path, const QModelIndex &index);
+    void setTypeFromIndex(EngineType type, const QModelIndex &index);
+    void setPicFromIndex(EnginePic pic, const QModelIndex &index);
+    void setDoomExeSave();
 
 private:
 
@@ -79,8 +91,8 @@ private:
     EngineInfo *selectedEngine_;
     int SearchEngines(const QString name);
     QDir m_mainAppPath;
-    QSettings EngineSettings;
-    void SaveEngineData();
+    void setupDosbox(QString path);
+    void setDoomExe();
 };
 
 //================Configs=================

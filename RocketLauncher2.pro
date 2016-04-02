@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     abstractmodels.cpp \
     dndfilesystemlistview.cpp \
     hyp_commonfunc.cpp \
-    configs.cpp
+    configs.cpp \
+    enginesetup.cpp
 
 HEADERS  += rocketlauncher2.h \
     abstractmodels.h \

@@ -51,6 +51,8 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
     initConfigs();
     loadsettings();
     enginelist->LoadEngineData();
+    if (enginelist->DoomExePath != "" && enginelist->DoomExePath != NULL)
+        ui->input_idExePath->setText(enginelist->DoomExePath);
     parseCmdLine(argc,argv);
     //ui->listbox_pwadload->setDragDropOverwriteMode(false);
 }
@@ -84,6 +86,7 @@ void RocketLauncher2::initListViews()
 {
     enginelist = new EngineListModel();
     ui->combo_Engines->setModel(enginelist);
+    ui->listbox_engines->setModel(enginelist);
 
     pwadloadlist = new QStandardItemModel;
     ui->listbox_pwadload->setModel(pwadloadlist);
@@ -195,6 +198,10 @@ void RocketLauncher2::parseCmdLine(int argc, char *argv[])
 
 QStringList RocketLauncher2::genCommandline()
 {
+    if (enginelist->getCurrentEngine()->type == Engine_DosBox)
+    {
+        return genDOSBoxcmd();
+    }
     QStringList ret;
     QString iwadpath = returnSelectedDndViewItemData(ui->listbox_IWADs);
     bool filesadded = false;
@@ -255,6 +262,75 @@ QStringList RocketLauncher2::genCommandline()
     return ret;
 }
 
+QStringList RocketLauncher2::genDOSBoxcmd()
+{
+    QStringList ret;
+    QStringList dosTemp;
+    QFileInfo doomExeFile(enginelist->DoomExePath);
+    QDir root(doomExeFile.absolutePath());
+    if (!doomExeFile.exists())
+    {
+        ret << "fail_DOOMEXE";
+        return ret;
+    }
+    QString mountfold = doomExeFile.absolutePath();
+    ret << "-c";
+    ret << "MOUNT C " + root.rootPath();
+    ret << "-c";
+    ret << "C:";
+    ret << "-c";
+    ret << "cd " + mountfold;
+    ret << "-c";
+    ret << "aspect = true";
+    bool filesadded = false;
+    if (reslist->rowCount() > 0)
+    {
+        for (int i = 0; i < reslist->rowCount(); i++)
+        {
+            if (reslist->item(i)->checkState() == Qt::Checked)
+            {
+                if (!filesadded)
+                {
+                    dosTemp << "-file";
+                    filesadded = true;
+                }
+                dosTemp << reslist->item(i)->data(Qt::UserRole).toString();
+            }
+        }
+    }
+    if (pwadloadlist->rowCount() > 0)
+    {
+        for (int i = 0; i < pwadloadlist->rowCount(); i++ )
+        {
+            if (pwadloadlist->item(i)->checkState() == Qt::Checked)
+            {
+                if (!filesadded)
+                {
+                    dosTemp << "-file";
+                    filesadded = true;
+                }
+                dosTemp << pwadloadlist->item(i)->data(Qt::UserRole).toString();
+            }
+        }
+    }
+    if (ui->input_map->text() != "" && ui->input_map->text() != NULL)
+    {
+        dosTemp << "-warp" << ui->input_map->text();
+    }
+    if (ui->combo_skill->currentText() != "Default")
+    {
+        qint16 skill = ui->combo_skill->currentIndex();
+        dosTemp << "-skill" << QString::number(skill);
+    }
+    if (ui->input_argbox->text() != "")
+        dosTemp.append(ui->input_argbox->text().split(" "));
+    ret << "-c";
+    ret << doomExeFile.fileName() + " " + dosTemp.join(" ");
+    ret << "-c";
+    ret << "exit";
+    return ret;
+}
+
 void RocketLauncher2::on_pushButton_3_clicked() //RUN
 {
     QString enginefile;
@@ -270,12 +346,19 @@ void RocketLauncher2::on_pushButton_3_clicked() //RUN
         QMessageBox::information(this,"Error" ,"Please select your IWAD");
         return;
     }
+    else if (cmd[0] == "fail_DOOMEXE")
+    {
+        QMessageBox::information(this,"Error" , "Could not find original Doom Executable for DOSBox");
+        return;
+    }
     if (ui->check_showcmdline->isChecked())
     {
         QString showargs;
         showargs = cmd.join("\n");
         QMessageBox::information(this,"Command Line" ,showargs);
     }
+    QFileInfo engineDir(enginefile);
+    QDir::setCurrent(engineDir.absolutePath());
     process = new QProcess();
     try
     {
