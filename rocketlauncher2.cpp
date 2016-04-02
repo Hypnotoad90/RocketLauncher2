@@ -1,0 +1,505 @@
+#include <QSettings>
+#include <QDir>
+#include <QDir>
+#include <QFileDialog>
+#include <QMessageBox>
+#include "abstractmodels.h"
+#include <QProcess>
+#include <QException>
+#include <QStandardItemModel>
+#include <QDebug>
+#include <QCommandLineParser>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+
+#include "dndfilesystemlistview.h"
+#include "rocketlauncher2.h"
+#include "ui_rocketlauncher2.h"
+#include "hyp_commonfunc.h"
+
+//==========Initialization==========
+
+RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
+    QMainWindow(parent),
+    ui(new Ui::RocketLauncher2),
+    settings(QSettings::IniFormat,QSettings::UserScope,"RocketLauncher2","settings"),
+    ConfigSettings(QSettings::IniFormat,QSettings::UserScope,"RocketLauncher2","SavedConfigs")
+{
+    //settings = QSettings(QSettings::IniFormat,QSettings::UserScope,"RocketLauncher2","settings");
+    qDebug() << settings.fileName();
+    qDebug().quote();
+    m_mainAppPath = QApplication::applicationDirPath();
+    m_settingsfile = m_mainAppPath.filePath("settings.ini");
+    m_wadextfilters << "*.wad" << "*.pk3" << ".pk7";
+    ui->setupUi(this);
+
+    initListViews();
+
+
+    connect(ui->listbox_pwadload, SIGNAL(fileSystemPathDropped(QString)), this, SLOT(addpwad(QString)));
+    connect(enginelist, SIGNAL(updateCombo(const QString)), this, SLOT(setEngineSelection(const QString)));
+    connect(enginelist, SIGNAL(updateComboIndex(int)), this, SLOT(setEngineSelectionIndex(int)));
+    connect(ui->listbox_fav, SIGNAL(fileSystemPathDropped(QString)), this, SLOT(addToFavorites(const QString)));
+    connect(ui->listbox_fav, SIGNAL(internalItemDropped(QDropEvent*)), this, SLOT(copyItemToFav(QDropEvent*)));
+    connect(ui->listbox_pwadload, SIGNAL(internalItemDropped(QDropEvent*)), this, SLOT(copyItemToPwads(QDropEvent*)));
+    connect(ui->listbox_IWADs, SIGNAL(internalItemDropped(QDropEvent*)), this, SLOT(copyItemToIwads(QDropEvent*)));
+    connect(ui->listbox_IWADs, SIGNAL(fileSystemPathDropped(QString)), this, SLOT(addToIWADs(const QString)));
+    connect(ui->listbox_res, SIGNAL(fileSystemPathDropped(QString)), this, SLOT(addToRes(const QString)));
+    connect(ui->listbox_res, SIGNAL(internalItemDropped(QDropEvent*)), this, SLOT(copyItemToRes(QDropEvent*)));
+    initPixmaps();
+    initConfigs();
+    loadsettings();
+    enginelist->LoadEngineData();
+    parseCmdLine(argc,argv);
+    //ui->listbox_pwadload->setDragDropOverwriteMode(false);
+}
+
+RocketLauncher2::~RocketLauncher2()
+{
+    delete ui;
+}
+
+void RocketLauncher2::initPixmaps()
+{
+    enginepics = new QList<QPixmap>;
+    enginepics->append(QPixmap(":/engine/img/dlogo.png").scaled(105,105, Qt::KeepAspectRatio)); //0 Doom
+    enginepics->append(QPixmap(":/engine/img/zandro.png").scaled(105,105,Qt::KeepAspectRatio)); //1 Zandronum
+    enginepics->append((QPixmap(":/engine/img/ZDoomlogo.png").scaled(105,105,Qt::KeepAspectRatio))); //2 Zdoom
+    enginepics->append((QPixmap(":/engine/img/GZDLogo.png").scaled(105,105,Qt::KeepAspectRatio))); //3 GZDoom
+    enginepics->append((QPixmap(":/engine/img/Choclogo.png").scaled(105,105,Qt::KeepAspectRatio))); //4 Chocolate Doom
+    enginepics->append((QPixmap(":/engine/img/prboom2.gif").scaled(105,105,Qt::KeepAspectRatio))); //5 PRBoom/PRBoom+
+    enginepics->append((QPixmap(":/engine/img/Zdaemonlogo.png").scaled(105,105,Qt::KeepAspectRatio))); //6 ZDaemon
+    enginepics->append((QPixmap(":/engine/img/oda.png").scaled(105,105,Qt::KeepAspectRatio))); //7 Odamex
+    enginepics->append((QPixmap(":/engine/img/eelogo.gif").scaled(105,105,Qt::KeepAspectRatio))); //8 Eternity Engine
+    enginepics->append((QPixmap(":/engine/img/dllogo.gif").scaled(105,105,Qt::KeepAspectRatio))); //9 Legacy
+    enginepics->append((QPixmap(":/engine/img/edgelogo.png").scaled(105,105,Qt::KeepAspectRatio))); //10 Edge
+    enginepics->append((QPixmap(":/engine/img/retrologo.png").scaled(105,105,Qt::KeepAspectRatio))); //11 RetroDoom
+    enginepics->append((QPixmap(":/engine/img/vavoom2.png").scaled(105,105,Qt::KeepAspectRatio))); //12 Vavoom
+    enginepics->append((QPixmap(":/engine/img/ddlogo.png").scaled(105,105,Qt::KeepAspectRatio))); //13 DoomsDay
+    ui->img_engine->setPixmap(enginepics->at(0));
+}
+
+void RocketLauncher2::initListViews()
+{
+    enginelist = new EngineListModel();
+    ui->combo_Engines->setModel(enginelist);
+
+    pwadloadlist = new QStandardItemModel;
+    ui->listbox_pwadload->setModel(pwadloadlist);
+    ui->listbox_pwadload->setDragEnabled(true);
+    ui->listbox_pwadload->setAcceptDrops(true);
+    ui->listbox_pwadload->setDropIndicatorShown(true);
+    ui->listbox_pwadload->setDragDropMode(QAbstractItemView::InternalMove);
+    ui->listbox_pwadload->setDefaultDropAction(Qt::MoveAction);
+
+    favlist = new QStandardItemModel;
+    ui->listbox_fav->setModel(favlist);
+    ui->listbox_fav->setDragEnabled(true);
+    ui->listbox_fav->setAcceptDrops(true);
+    ui->listbox_fav->setDropIndicatorShown(true);
+    ui->listbox_fav->setDragDropMode(QAbstractItemView::InternalMove);
+    ui->listbox_fav->setDefaultDropAction(Qt::MoveAction);
+
+    iwadlist = new QStandardItemModel;
+    ui->listbox_IWADs->setModel(iwadlist);
+    ui->listbox_IWADs->setAcceptDrops(true);
+    ui->listbox_IWADs->setDropIndicatorShown(true);
+    ui->listbox_IWADs->setDragDropMode(QAbstractItemView::InternalMove);
+    ui->listbox_IWADs->setDefaultDropAction(Qt::MoveAction);
+
+    reslist = new QStandardItemModel;
+    ui->listbox_res->setModel(reslist);
+    ui->listbox_res->setAcceptDrops(true);
+    ui->listbox_res->setDropIndicatorShown(true);
+    ui->listbox_res->setDragDropMode(QAbstractItemView::InternalMove);
+    ui->listbox_res->setDefaultDropAction(Qt::MoveAction);
+}
+
+//==========LOAD==========
+
+
+void RocketLauncher2::loadsettings()
+{
+    //QSettings settings("RetroTools");
+    int fsize = settings.beginReadArray("pwad_favs");
+    qDebug() << fsize;
+    qDebug().quote();
+    if (fsize > 0)
+    {
+        for (int i = 0; i < fsize; i++)
+        {
+            settings.setArrayIndex(i);
+            updateFavs(settings.value("fav_path").toString(), false);
+        }
+    }
+    settings.endArray();
+    fsize = settings.beginReadArray("iwads");
+    if (fsize > 0)
+    {
+        for (int i = 0; i < fsize; i++)
+        {
+            settings.setArrayIndex(i);
+            updateIWADs(settings.value("iwad_path").toString(), false);
+        }
+    }
+    settings.endArray();
+    fsize = settings.beginReadArray("resfiles");
+    if (fsize > 0)
+    {
+        for (int i = 0; i < fsize; i++)
+        {
+            settings.setArrayIndex(i);
+            updateres(settings.value("resfile_path").toString(), false);
+        }
+    }
+    settings.endArray();
+    if (settings.contains("lastIwadIndex"))
+    {
+        QModelIndex index = iwadlist->index( settings.value("lastIwadIndex").toInt(), 0);
+        ui->listbox_IWADs->setCurrentIndex(index);
+    }
+}
+
+void RocketLauncher2::parseCmdLine(int argc, char *argv[])
+{
+    if (argc < 2)
+        return;
+    QCommandLineParser parser;
+    QStringList args;
+    for (int i = 0; i < argc; i++)
+    {
+        args << argv[i];
+    }
+    parser.process(args);
+    const QStringList posargs = parser.positionalArguments();
+    //QMessageBox::information(this,"Test",posargs.at(0));
+    if (posargs.size() > 0)
+    {
+        QString rocketCheck = posargs.at(0);
+        if (rocketCheck.right(6) == "rocket")
+        {
+            loadExtConfig(rocketCheck);
+        }
+        else
+        {
+            for (QString path : posargs)
+            {
+                RocketLauncher2::addpwad(path);
+            }
+        }
+    }
+}
+
+//==========LAUNCH ENGINE==========
+
+QStringList RocketLauncher2::genCommandline()
+{
+    QStringList ret;
+    QString iwadpath = returnSelectedDndViewItemData(ui->listbox_IWADs);
+    bool filesadded = false;
+    ret << "-IWAD";
+    if (iwadpath == "")
+    {
+        ret << "fail_IWADSELECT";
+        return ret;
+    }
+    ret << iwadpath;
+    if (reslist->rowCount() > 0)
+    {
+        for (int i = 0; i < reslist->rowCount(); i++)
+        {
+            if (reslist->item(i)->checkState() == Qt::Checked)
+            {
+                if (!filesadded)
+                {
+                    ret << "-file";
+                    filesadded = true;
+                }
+                ret << reslist->item(i)->data(Qt::UserRole).toString();
+            }
+        }
+    }
+    if (pwadloadlist->rowCount() > 0)
+    {
+        for (int i = 0; i < pwadloadlist->rowCount(); i++ )
+        {
+            if (pwadloadlist->item(i)->checkState() == Qt::Checked)
+            {
+                if (!filesadded)
+                {
+                    ret << "-file";
+                    filesadded = true;
+                }
+                ret << pwadloadlist->item(i)->data(Qt::UserRole).toString();
+            }
+        }
+    }
+    if (ui->input_map->text() != "" && ui->input_map->text() != NULL)
+    {
+        if (enginelist->getEngineType() == Engine_ZDoom)
+        {
+            ret << "+MAP" << ui->input_map->text();
+        }
+        else
+        {
+            ret << "-warp" << ui->input_map->text();
+        }
+    }
+    if (ui->combo_skill->currentText() != "Default")
+    {
+        qint16 skill = ui->combo_skill->currentIndex();
+        ret << "-skill" << QString::number(skill);
+    }
+    ret.append(ui->input_argbox->text().split(" "));
+    return ret;
+}
+
+void RocketLauncher2::on_pushButton_3_clicked() //RUN
+{
+    QString enginefile;
+    if (!enginelist->EngineSet)
+    {
+        QMessageBox::information(this,"Error" ,"Please select or add an engine (source port).");
+        return;
+    }
+    enginefile = enginelist->getCurrentEngine()->path;
+    QStringList cmd = genCommandline();
+    if (cmd[1] == "fail_IWADSELECT")
+    {
+        QMessageBox::information(this,"Error" ,"Please select your IWAD");
+        return;
+    }
+    if (ui->check_showcmdline->isChecked())
+    {
+        QString showargs;
+        showargs = cmd.join("\n");
+        QMessageBox::information(this,"Command Line" ,showargs);
+    }
+    process = new QProcess();
+    try
+    {
+        process->start(enginefile,cmd);
+    }
+    catch(QException &e)
+    {
+        QMessageBox::warning(this,"Error" ,"Engine failed to start.");
+    }
+}
+
+//==========ENGINE SELECTION HANDLING=========
+
+void RocketLauncher2::on_pushButton_2_clicked() //Select Engine
+{
+    QFileInfo file = QFileInfo(QFileDialog::getOpenFileName(this,tr("Locate engine executable")));
+    QString result = enginelist->addEngine(file);
+    if (result == "Error")
+        QMessageBox::information(this,"Error","Something went wrong, no engine added.");
+}
+
+void RocketLauncher2::on_combo_Engines_currentIndexChanged(int index)
+{
+    enginelist->setCurrentEngine(index);
+    SetEnginePic(enginelist->getCurrentEngine()->EngineImage);
+}
+
+void RocketLauncher2::SetEnginePic(EnginePic pic)
+{
+    if (pic == Pic_Default)
+        ui->img_engine->setPixmap(enginepics->at(0));
+    else if (pic == Pic_Zandronum)
+        ui->img_engine->setPixmap(enginepics->at(1));
+    else if (pic == Pic_Zdoom)
+        ui->img_engine->setPixmap(enginepics->at(2));
+    else if (pic == Pic_GZdoom)
+        ui->img_engine->setPixmap(enginepics->at(3));
+    else if (pic == Pic_Chocolate)
+        ui->img_engine->setPixmap(enginepics->at(4));
+    else if (pic == Pic_PrBoom)
+        ui->img_engine->setPixmap(enginepics->at(5));
+    else if (pic == Pic_ZDaemon)
+        ui->img_engine->setPixmap(enginepics->at(6));
+    else if (pic == Pic_Odamex)
+        ui->img_engine->setPixmap(enginepics->at(7));
+    else if (pic == Pic_Eternity)
+        ui->img_engine->setPixmap(enginepics->at(8));
+    else if (pic == Pic_Legacy)
+        ui->img_engine->setPixmap(enginepics->at(9));
+    else if (pic == Pic_Edge)
+        ui->img_engine->setPixmap(enginepics->at(10));
+    else if (pic == Pic_Retro)
+        ui->img_engine->setPixmap(enginepics->at(11));
+    else if (pic == Pic_Vavoom)
+        ui->img_engine->setPixmap(enginepics->at(12));
+    else if (pic == Pic_Doomsday)
+        ui->img_engine->setPixmap(enginepics->at(13));
+}
+
+
+
+void RocketLauncher2::setEngineSelection(const QString text)
+{
+    ui->combo_Engines->setCurrentText(text);
+
+}
+
+void RocketLauncher2::setEngineSelectionIndex(int index)
+{
+    qDebug() << "updating index";
+    qDebug().quote();
+    ui->combo_Engines->setCurrentIndex(index);
+
+}
+
+//==========WAD LISTVIEW HANDLING==========
+
+void RocketLauncher2::addpwad(QString filepath)
+{
+    updateDndListView(filepath, pwadloadlist, true);
+}
+
+void RocketLauncher2::addToFavorites(const QString filepath)
+{
+    updateFavs(filepath, true);
+}
+
+void RocketLauncher2::updateFavs(QString filepath, bool save)
+{
+    bool noMatch = updateDndListView(filepath, favlist, false);
+    if (save)
+    {
+        if (noMatch)
+            saveListviewPath("pwad_favs", "fav_path", filepath, settings);
+    }
+}
+
+void RocketLauncher2::on_button_add_clicked()
+{
+    addpwad(QFileDialog::getOpenFileName(this,tr("Add a pwad")));
+}
+
+void RocketLauncher2::on_button_pwadsclear_clicked()
+{
+    pwadloadlist->clear();
+}
+
+
+void RocketLauncher2::on_button_remove_clicked()
+{
+    this->setUpdatesEnabled(false);
+    removeSelectedFromDnDListView(ui->listbox_pwadload, pwadloadlist);
+    this->setUpdatesEnabled(true);
+}
+
+void RocketLauncher2::on_button_favadd_clicked()
+{
+    updateFavs(QFileDialog::getOpenFileName(this,tr("Add a file to your favorites!")), true);
+}
+
+void RocketLauncher2::on_button_favremove_clicked()
+{
+    this->setUpdatesEnabled(false);
+    removeSelectedFromDnDListViewSave(ui->listbox_fav, favlist, "pwad_favs", "fav_path", settings);
+    this->setUpdatesEnabled(true);
+
+}
+
+void RocketLauncher2::copyItemToPwads(QDropEvent* pEvent)
+{
+    this->setUpdatesEnabled(false);
+    copyItemToDndListView(qobject_cast<DndFileSystemListView *>(pEvent->source()), pwadloadlist, true);
+    this->setUpdatesEnabled(true);
+}
+
+void RocketLauncher2::copyItemToFav(QDropEvent* pEvent)
+{
+    this->setUpdatesEnabled(false);
+    copyItemToDndListViewSave(qobject_cast<DndFileSystemListView *>(pEvent->source()), favlist, false, "pwad_favs", "fav_path", settings);
+    this->setUpdatesEnabled(true);
+}
+
+void RocketLauncher2::on_button_addiwad_clicked()
+{
+    updateIWADs(QFileDialog::getOpenFileName(this,tr("Locate an IWAD to add to the list.")), true);
+}
+
+void RocketLauncher2::updateIWADs(QString filepath, bool save)
+{
+    bool noMatch = updateDndListView(filepath, iwadlist, false);
+    if (save)
+    {
+        if (noMatch)
+            saveListviewPath("iwads", "iwad_path", filepath, settings);
+    }
+}
+
+void RocketLauncher2::on_button_deliwad_clicked()
+{
+    removeSelectedFromDnDListViewSave(ui->listbox_IWADs, iwadlist, "iwads", "iwad_path", settings);
+}
+
+void RocketLauncher2::copyItemToIwads(QDropEvent* pEvent)
+{
+    this->setUpdatesEnabled(false);
+    copyItemToDndListViewSave(qobject_cast<DndFileSystemListView *>(pEvent->source()), iwadlist, false, "iwads", "iwad_path", settings);
+    this->setUpdatesEnabled(true);
+}
+
+void RocketLauncher2::addToIWADs(const QString filepath)
+{
+    updateIWADs(filepath, true);
+}
+
+void RocketLauncher2::on_button_addres_clicked()
+{
+    updateres(QFileDialog::getOpenFileName(this,tr("Locate a common resource file to add to the list.")), true);
+}
+
+void RocketLauncher2::updateres(QString filepath, bool save)
+{
+    bool noMatch = updateDndListView(filepath, reslist, true, false);
+    if (save)
+    {
+        if (noMatch)
+            saveListviewPath("resfiles", "resfile_path", filepath, settings);
+    }
+}
+
+void RocketLauncher2::on_button_delres_clicked()
+{
+    removeSelectedFromDnDListViewSave(ui->listbox_res, reslist, "resfiles", "resfile_path", settings);
+}
+
+void RocketLauncher2::addToRes(const QString filepath)
+{
+    updateres(filepath, true);
+}
+
+void RocketLauncher2::copyItemToRes(QDropEvent* pEvent)
+{
+    this->setUpdatesEnabled(false);
+    copyItemToDndListViewSave(qobject_cast<DndFileSystemListView *>(pEvent->source()), reslist, true, "resfiles", "resfile_path", settings);
+    this->setUpdatesEnabled(true);
+}
+
+void RocketLauncher2::on_listbox_IWADs_clicked(const QModelIndex &index)
+{
+    settings.setValue("lastIwadIndex",index.row());
+}
+
+
+//==========MISC==========
+
+bool RocketLauncher2::savesettings(QString key, QString value)
+{
+    if (key == "" || key == NULL || value == "" || value == NULL)
+        return false;
+    //QSettings settings("RetroTools");
+    settings.setValue(key, value);
+    return true;
+}
+
+void RocketLauncher2::on_button_helpmap_clicked()
+{
+    QMessageBox::information(this,"Map/Warp","If the engine is a modern ZDoom based engine, use the maplump name, e.g. 'MAP01', otherwise if it's a more oldschool engine, use the map number, e.g. '01'");
+}
