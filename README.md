@@ -33,3 +33,14 @@ Rocket Launcher 2.0 also features a new tab allowing you to configure each engin
 ### Qt Framework
 
 This allows for this project to be cross platform, including support for Linux and OSX. For windows I provide a static build, which means it's provided as a single executable with no additional DLL's required or frameworks to install.
+
+### Installation
+
+Coming soon
+
+### Thanks to:
+
+Blzut3: for helping me with some Qt queries.
+Arkore: for testing on Windows
+DevilHunter: for testing on Windows
+TerminusEst13: for originally coming up with the name 'Rocket Launcher' for the front end
