@@ -484,17 +484,58 @@
         <string>Play Doom!</string>
        </property>
       </widget>
-      <zorder>input_map</zorder>
-      <zorder>label_map</zorder>
-      <zorder>button_helpmap</zorder>
-      <zorder>label_skill</zorder>
-      <zorder>combo_skill</zorder>
-      <zorder>check_showcmdline</zorder>
-      <zorder>pushButton_3</zorder>
-      <zorder>label_fav</zorder>
-      <zorder>listbox_fav</zorder>
-      <zorder>button_favremove</zorder>
-      <zorder>button_favadd</zorder>
+      <widget class="QCheckBox" name="check_nomonsters">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>120</y>
+         <width>81</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>No Monsters</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="check_nomusic">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>150</y>
+         <width>61</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>No Music</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="check_record">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>90</y>
+         <width>91</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Record Demo:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="input_record">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>90</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>demo_name</string>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_loadsave">

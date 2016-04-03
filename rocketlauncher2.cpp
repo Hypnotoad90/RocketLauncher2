@@ -1,3 +1,22 @@
+/*  This file (rocketlauncher2.cpp) is part of Rocket Launcher 2.0 - A cross platform
+ *  front end for all DOOM engine source ports.
+ *
+ *  Copyright (C) Hypnotoad
+ *
+ *  Rocket Launcher is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Rocket Launcher is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Rocket Launcher.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <QSettings>
 #include <QDir>
 #include <QDir>
@@ -258,7 +277,17 @@ QStringList RocketLauncher2::genCommandline()
         qint16 skill = ui->combo_skill->currentIndex();
         ret << "-skill" << QString::number(skill);
     }
-    ret.append(ui->input_argbox->text().split(" "));
+    if (ui->check_nomonsters->isChecked())
+        ret << "-nomonsters";
+    if (ui->check_nomusic->isChecked())
+        ret << "-nomusic";
+    if (ui->check_record->isChecked())
+    {
+        ret << "-record";
+        ret << ui->input_record->text();
+    }
+    if (ui->input_argbox->text() != "" && ui->input_argbox->text() != NULL)
+        ret.append(splitArgs(ui->input_argbox->text()));
     return ret;
 }
 
@@ -322,7 +351,13 @@ QStringList RocketLauncher2::genDOSBoxcmd()
         qint16 skill = ui->combo_skill->currentIndex();
         dosTemp << "-skill" << QString::number(skill);
     }
-    if (ui->input_argbox->text() != "")
+    if (ui->check_nomonsters->isChecked())
+        dosTemp << "-nomonsters";
+    if (ui->check_nomusic->isChecked())
+        dosTemp << "-nomusic";
+    if (ui->check_record->isChecked())
+        dosTemp << "-record " + ui->input_record->text();
+    if (ui->input_argbox->text() != "" && ui->input_argbox->text() != NULL)
         dosTemp.append(ui->input_argbox->text().split(" "));
     ret << "-c";
     ret << doomExeFile.fileName() + " " + dosTemp.join(" ");
