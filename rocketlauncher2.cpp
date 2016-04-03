@@ -47,7 +47,7 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
 {
     //settings = QSettings(QSettings::IniFormat,QSettings::UserScope,"RocketLauncher2","settings");
     qDebug() << settings.fileName();
-    qDebug().quote();
+    //qDebug().quote();
     m_mainAppPath = QApplication::applicationDirPath();
     m_settingsfile = m_mainAppPath.filePath("settings.ini");
     m_wadextfilters << "*.wad" << "*.pk3" << ".pk7";
@@ -146,7 +146,7 @@ void RocketLauncher2::loadsettings()
     //QSettings settings("RetroTools");
     int fsize = settings.beginReadArray("pwad_favs");
     qDebug() << fsize;
-    qDebug().quote();
+    //qDebug().quote();
     if (fsize > 0)
     {
         for (int i = 0; i < fsize; i++)
@@ -464,7 +464,7 @@ void RocketLauncher2::setEngineSelection(const QString text)
 void RocketLauncher2::setEngineSelectionIndex(int index)
 {
     qDebug() << "updating index";
-    qDebug().quote();
+    //qDebug().quote();
     ui->combo_Engines->setCurrentIndex(index);
 
 }

@@ -43,7 +43,7 @@ int EngineListModel::rowCount(const QModelIndex &) const {
 void EngineListModel::setCurrentEngine(const int index)
 {
     qDebug() << "Udating Engine at index " << index;
-    qDebug().quote();
+    //qDebug().quote();
     if (index >= Engines_.size()) return;
     else
     {
@@ -64,7 +64,7 @@ QString EngineListModel::addEngine(QFileInfo file)
     if (!file.exists())
         return "Error";
     qDebug() << "Adding Engine";
-    qDebug().quote();
+    //qDebug().quote();
     if (file.baseName().compare( QString("zandronum"), Qt::CaseInsensitive) == 0)
     {
         return updateEngine("Zandronum", file.absoluteFilePath(), Engine_ZDoom, Pic_Zandronum, true);
