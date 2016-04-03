@@ -34,3 +34,5 @@ RESOURCES += \
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 
 RC_ICONS = RocketLauncher2.ico
+
+CONFIG += c++11
