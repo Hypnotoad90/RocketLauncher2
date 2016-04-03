@@ -26,7 +26,7 @@
 class RocketFile
 {
 public:
-    Configs();
+    //Configs();
     QString name;
     QString engName;
     QString iwadName;
