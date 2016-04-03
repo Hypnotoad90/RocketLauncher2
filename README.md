@@ -39,8 +39,8 @@ This allows for this project to be cross platform, including support for Linux a
 Coming soon
 
 ### Thanks to:
-
-Blzut3: for helping me with some Qt queries.
-Arkore: for testing on Windows
-DevilHunter: for testing on Windows
-TerminusEst13: for originally coming up with the name 'Rocket Launcher' for the front end
+<br>
+Blzut3: for helping me with some Qt queries.<br>
+Arkore: for testing on Windows.<br>
+DevilHunter: for testing on Windows.<br>
+TerminusEst13: for originally coming up with the name 'Rocket Launcher' for the front end.<br>
