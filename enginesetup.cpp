@@ -182,4 +182,5 @@ void RocketLauncher2::on_combo_EngPic_currentTextChanged(const QString &arg1)
 void RocketLauncher2::on_button_idExeBrowse_clicked()
 {
     enginelist->setDoomExeSave();
+    ui->input_idExePath->setText(enginelist->DoomExePath);
 }
