@@ -110,7 +110,16 @@ void RocketLauncher2::on_button_addCustEng_clicked()
 void RocketLauncher2::on_input_selEngName_returnPressed()
 {
     QModelIndex index = ui->listbox_engines->selectionModel()->selectedIndexes()[0];
-    enginelist->setNameFromIndex(ui->input_selEngName->text(), index);
+    if (ui->input_selEngName->text() == enginelist->data(index, Qt::DisplayRole))
+        return;
+    if (getIndexOfDisplayText(enginelist,ui->input_selEngName->text()) == QModelIndex())
+    {
+        enginelist->setNameFromIndex(ui->input_selEngName->text(), index);
+    }
+    else
+    {
+        QMessageBox::warning(this, "Profile Name Already Exists", "There already exists an engine profile with that name, please choose another!");
+    }
 }
 
 
