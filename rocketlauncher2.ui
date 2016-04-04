@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>690</width>
+    <width>696</width>
     <height>501</height>
    </rect>
   </property>
@@ -41,7 +41,7 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4" rowstretch="3,6,1">
         <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,1,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,2,1">
           <item>
            <layout class="QGridLayout" name="gridLayout_3">
             <property name="sizeConstraint">
@@ -128,7 +128,7 @@
             </item>
            </layout>
           </item>
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QGroupBox" name="groupBox_2">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -145,7 +145,7 @@
             <property name="title">
              <string>Launch Engine!</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="3,1">
              <item>
               <layout class="QVBoxLayout" name="verticalLayout">
                <item>
@@ -161,12 +161,18 @@
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
                    <property name="text">
                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Map/Warp&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                   </widget>
                  </item>
-                 <item alignment="Qt::AlignLeft">
+                 <item>
                   <widget class="QLineEdit" name="input_map">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -176,7 +182,7 @@
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>50</width>
+                     <width>70</width>
                      <height>0</height>
                     </size>
                    </property>
@@ -188,7 +194,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item alignment="Qt::AlignLeft">
+                 <item>
                   <widget class="QPushButton" name="button_helpmap">
                    <property name="minimumSize">
                     <size>
@@ -283,14 +289,11 @@
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_4">
-                 <property name="spacing">
-                  <number>1</number>
-                 </property>
-                 <item alignment="Qt::AlignLeft">
+                 <item>
                   <widget class="QCheckBox" name="check_record">
                    <property name="maximumSize">
                     <size>
-                     <width>90</width>
+                     <width>16777215</width>
                      <height>16777215</height>
                     </size>
                    </property>
@@ -299,7 +302,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item alignment="Qt::AlignRight">
+                 <item>
                   <widget class="QLineEdit" name="input_record">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -347,7 +350,7 @@
                <item>
                 <widget class="QPushButton" name="pushButton_3">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -356,6 +359,12 @@
                   <size>
                    <width>0</width>
                    <height>75</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>90</height>
                   </size>
                  </property>
                  <property name="text">
@@ -435,186 +444,200 @@
           <property name="title">
            <string>Files To Load (external and internal drag and drop supported)</string>
           </property>
-          <layout class="QGridLayout" name="gridLayout">
-           <item row="0" column="0">
-            <layout class="QHBoxLayout" name="horizontalLayout">
+          <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="1,1,2">
+           <item>
+            <layout class="QVBoxLayout" name="livlayout1">
+             <property name="spacing">
+              <number>6</number>
+             </property>
              <item>
-              <layout class="QVBoxLayout" name="livlayout1">
-               <property name="spacing">
-                <number>6</number>
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;IWAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
-               <item>
-                <widget class="QLabel" name="label">
+              </widget>
+             </item>
+             <item>
+              <widget class="DndFileSystemListView" name="listbox_IWADs"/>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="liblayout">
+               <property name="spacing">
+                <number>20</number>
+               </property>
+               <item alignment="Qt::AlignLeft">
+                <widget class="QPushButton" name="button_addiwad">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>0</height>
+                  </size>
+                 </property>
                  <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;IWAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>Add IWAD</string>
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="DndFileSystemListView" name="listbox_IWADs"/>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="liblayout">
-                 <property name="spacing">
-                  <number>20</number>
+               <item alignment="Qt::AlignRight">
+                <widget class="QPushButton" name="button_deliwad">
+                 <property name="maximumSize">
+                  <size>
+                   <width>30</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
-                 <item alignment="Qt::AlignLeft">
-                  <widget class="QPushButton" name="button_addiwad">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>60</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>Add IWAD</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item alignment="Qt::AlignRight">
-                  <widget class="QPushButton" name="button_deliwad">
-                   <property name="maximumSize">
-                    <size>
-                     <width>30</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>Del</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                 <property name="text">
+                  <string>Del</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="livlayout2">
              <item>
-              <layout class="QVBoxLayout" name="livlayout2">
-               <item>
-                <widget class="QLabel" name="label_res">
+              <widget class="QLabel" name="label_res">
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Common Resources&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="DndFileSystemListView" name="listbox_res"/>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="libhlayout1">
+               <property name="spacing">
+                <number>64</number>
+               </property>
+               <item alignment="Qt::AlignLeft">
+                <widget class="QPushButton" name="button_addres">
+                 <property name="minimumSize">
+                  <size>
+                   <width>100</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>80</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Common Resources&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>Add Resource</string>
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="DndFileSystemListView" name="listbox_res"/>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="libhlayout1">
-                 <property name="spacing">
-                  <number>64</number>
+               <item alignment="Qt::AlignRight">
+                <widget class="QPushButton" name="button_delres">
+                 <property name="minimumSize">
+                  <size>
+                   <width>30</width>
+                   <height>0</height>
+                  </size>
                  </property>
-                 <item alignment="Qt::AlignLeft">
-                  <widget class="QPushButton" name="button_addres">
-                   <property name="minimumSize">
-                    <size>
-                     <width>80</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>80</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>Add Resource</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item alignment="Qt::AlignRight">
-                  <widget class="QPushButton" name="button_delres">
-                   <property name="minimumSize">
-                    <size>
-                     <width>30</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>30</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>Del</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                 <property name="maximumSize">
+                  <size>
+                   <width>30</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Del</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_8">
              <item>
-              <layout class="QVBoxLayout" name="libvlayout3">
+              <widget class="QLabel" name="label_pwads">
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Files to Load&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="DndFileSystemListView" name="listbox_pwadload">
+               <property name="acceptDrops">
+                <bool>true</bool>
+               </property>
+               <property name="toolTip">
+                <string>To change the load order, just drag and move the files within to their desired placement</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout">
                <item>
-                <widget class="QLabel" name="label_pwads">
+                <widget class="QPushButton" name="button_pwadsclear">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Files to Load&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>Clear</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="DndFileSystemListView" name="listbox_pwadload">
-                 <property name="acceptDrops">
-                  <bool>true</bool>
+                <spacer name="horizontalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
                  </property>
-                 <property name="toolTip">
-                  <string>To change the load order, just drag and move the files within to their desired placement</string>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>88</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item alignment="Qt::AlignRight">
+                <widget class="QPushButton" name="button_add">
+                 <property name="minimumSize">
+                  <size>
+                   <width>18</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Add</string>
                  </property>
                 </widget>
                </item>
-               <item>
-                <layout class="QHBoxLayout" name="libhlayout3">
-                 <property name="spacing">
-                  <number>100</number>
+               <item alignment="Qt::AlignRight">
+                <widget class="QPushButton" name="button_remove">
+                 <property name="minimumSize">
+                  <size>
+                   <width>18</width>
+                   <height>0</height>
+                  </size>
                  </property>
-                 <item>
-                  <widget class="QPushButton" name="button_pwadsclear">
-                   <property name="minimumSize">
-                    <size>
-                     <width>60</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>60</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>Clear</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="libhsublayout1">
-                   <item>
-                    <widget class="QPushButton" name="button_add">
-                     <property name="text">
-                      <string>Add</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="button_remove">
-                     <property name="text">
-                      <string>Remove</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
+                 <property name="text">
+                  <string>Remove</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
