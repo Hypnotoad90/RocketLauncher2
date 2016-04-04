@@ -22,6 +22,7 @@
 
 #include <QStringList>
 #include <QString>
+#include <QVariantList>
 
 class RocketFile
 {
@@ -32,9 +33,14 @@ public:
     QString iwadName;
     QStringList resPaths;
     QStringList filePaths;
+    QVariantList filesChecked;
     QString map;
     int skill;
     QString addCmd;
+    bool demo = false;
+    QString demoName;
+    bool noMonsters = false;
+    bool noMusic = false;
 };
 
 #endif // CONFIGS_H

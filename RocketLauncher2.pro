@@ -36,3 +36,9 @@ CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 RC_ICONS = RocketLauncher2.ico
 
 CONFIG += c++11
+
+VERSION = 0.1.0.1
+QMAKE_TARGET_COMPANY = Techpillar
+QMAKE_TARGET_PRODUCT = RocketLauncher 2.0
+QMAKE_TARGET_DESCRIPTION = Universal Doom Frontend
+QMAKE_TARGET_COPYRIGHT = Hypnotoad
