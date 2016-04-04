@@ -145,186 +145,236 @@
             <property name="title">
              <string>Launch Engine!</string>
             </property>
-            <layout class="QGridLayout" name="gridLayout_2">
-             <item row="0" column="0">
-              <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,2">
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout">
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout">
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_2">
-                   <item>
-                    <widget class="QLabel" name="label_map">
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Map/Warp&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLineEdit" name="input_map">
-                     <property name="minimumSize">
-                      <size>
-                       <width>50</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>50</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="button_helpmap">
-                     <property name="minimumSize">
-                      <size>
-                       <width>20</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>20</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>?</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_3">
-                   <item>
-                    <widget class="QLabel" name="label_skill">
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Skill&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QComboBox" name="combo_skill">
-                     <item>
-                      <property name="text">
-                       <string>Default</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>I'm too young to die</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Hey, not too rough</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Hurt me plenty</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Ultra-Violence</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Nightmare!</string>
-                      </property>
-                     </item>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_4">
-                   <property name="spacing">
-                    <number>1</number>
-                   </property>
-                   <item>
-                    <widget class="QCheckBox" name="check_record">
-                     <property name="maximumSize">
-                      <size>
-                       <width>90</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Record Demo:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLineEdit" name="input_record">
-                     <property name="text">
-                      <string>demo_name</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <widget class="QCheckBox" name="check_nomonsters">
-                   <property name="text">
-                    <string>No Monsters</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QCheckBox" name="check_nomusic">
-                   <property name="text">
-                    <string>No Music</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QVBoxLayout" name="verticalLayout_2">
+                <layout class="QHBoxLayout" name="horizontalLayout_2">
                  <property name="spacing">
-                  <number>5</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>53</number>
+                  <number>6</number>
                  </property>
                  <item>
-                  <widget class="QPushButton" name="pushButton_3">
+                  <widget class="QLabel" name="label_map">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Map/Warp&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item alignment="Qt::AlignLeft">
+                  <widget class="QLineEdit" name="input_map">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>0</width>
-                     <height>75</height>
+                     <width>50</width>
+                     <height>0</height>
                     </size>
                    </property>
-                   <property name="text">
-                    <string>Play Doom!</string>
+                   <property name="maximumSize">
+                    <size>
+                     <width>50</width>
+                     <height>16777215</height>
+                    </size>
                    </property>
                   </widget>
                  </item>
-                 <item>
-                  <widget class="QCheckBox" name="check_showcmdline">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
+                 <item alignment="Qt::AlignLeft">
+                  <widget class="QPushButton" name="button_helpmap">
+                   <property name="minimumSize">
+                    <size>
+                     <width>20</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>20</width>
+                     <height>16777215</height>
+                    </size>
                    </property>
                    <property name="text">
-                    <string>Show Command Line</string>
+                    <string>?</string>
                    </property>
                   </widget>
                  </item>
                 </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1">
+                 <property name="spacing">
+                  <number>6</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="label_skill">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>50</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Skill&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="combo_skill">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>122</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>Default</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>I'm too young to die</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Hey, not too rough</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Hurt me plenty</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Ultra-Violence</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Nightmare!</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                 <property name="spacing">
+                  <number>1</number>
+                 </property>
+                 <item alignment="Qt::AlignLeft">
+                  <widget class="QCheckBox" name="check_record">
+                   <property name="maximumSize">
+                    <size>
+                     <width>90</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Record Demo:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item alignment="Qt::AlignRight">
+                  <widget class="QLineEdit" name="input_record">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>74</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>demo_name</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="check_nomonsters">
+                 <property name="text">
+                  <string>No Monsters</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="check_nomusic">
+                 <property name="text">
+                  <string>No Music</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_2">
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <property name="bottomMargin">
+                <number>53</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="pushButton_3">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>75</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Play Doom!</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="check_showcmdline">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Show Command Line</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
