@@ -269,7 +269,9 @@ QStringList RocketLauncher2::genCommandline()
         }
         else
         {
-            ret << "-warp" << ui->input_map->text();
+            QStringList warp = ui->input_map->text().split(" ");
+            ret << "-warp";
+            ret.append(warp);
         }
     }
     if (ui->combo_skill->currentText() != "Default")
