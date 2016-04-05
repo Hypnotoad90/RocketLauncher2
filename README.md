@@ -36,7 +36,17 @@ This allows for this project to be cross platform, including support for Linux a
 
 ### Installation
 
-Coming soon
+#### Windows
+
+Download executable here: https://github.com/Hypnotoad90/RocketLauncher2/releases/download/0.1.0.1/RocketLauncher2_v0101.zip
+
+#### Linux
+
+No binaries available as of yet. To compile, simply grab Qt5-default package, then run qmake, followed by make, on the source code.
+
+#### Mac
+
+Coming soon.
 
 ### Thanks to:
 <br>
