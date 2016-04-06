@@ -671,6 +671,5 @@ bool RocketLauncher2::savesettings(QString key, QString value)
 void RocketLauncher2::on_button_helpmap_clicked()
 {
     QMessageBox::information(this, "Map/Warp",
-                             "If the engine is a modern ZDoom based engine, use the maplump name, " +
-                             "e.g. 'MAP01', otherwise if it's a more oldschool engine, use the map number, e.g. '01'");
+                             "If the engine is a modern ZDoom based engine, use the maplump name, e.g. 'MAP01', otherwise if it's a more oldschool engine, use the map number, e.g. '01'");
 }

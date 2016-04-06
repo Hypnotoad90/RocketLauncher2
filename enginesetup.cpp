@@ -124,8 +124,7 @@ void RocketLauncher2::on_input_selEngName_returnPressed()
     }
     else
     {
-        QMessageBox::warning(this, "Profile Name Already Exists", "There already exists an engine profile " +
-                             "with that name, please choose another!");
+        QMessageBox::warning(this, "Profile Name Already Exists", "There already exists an engine profile with that name, please choose another!");
     }
 }
 
