@@ -70,8 +70,10 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
     initConfigs();
     loadsettings();
     enginelist->LoadEngineData();
+
     if (enginelist->DoomExePath != "" && enginelist->DoomExePath != NULL)
         ui->input_idExePath->setText(enginelist->DoomExePath);
+
     parseCmdLine(argc,argv);
     //ui->listbox_pwadload->setDragDropOverwriteMode(false);
 }
@@ -147,6 +149,7 @@ void RocketLauncher2::loadsettings()
     int fsize = settings.beginReadArray("pwad_favs");
     qDebug() << fsize;
     //qDebug().quote();
+
     if (fsize > 0)
     {
         for (int i = 0; i < fsize; i++)
@@ -155,8 +158,10 @@ void RocketLauncher2::loadsettings()
             updateFavs(settings.value("fav_path").toString(), false);
         }
     }
+
     settings.endArray();
     fsize = settings.beginReadArray("iwads");
+
     if (fsize > 0)
     {
         for (int i = 0; i < fsize; i++)
@@ -165,8 +170,10 @@ void RocketLauncher2::loadsettings()
             updateIWADs(settings.value("iwad_path").toString(), false);
         }
     }
+
     settings.endArray();
     fsize = settings.beginReadArray("resfiles");
+
     if (fsize > 0)
     {
         for (int i = 0; i < fsize; i++)
@@ -175,7 +182,9 @@ void RocketLauncher2::loadsettings()
             updateres(settings.value("resfile_path").toString(), false);
         }
     }
+
     settings.endArray();
+
     if (settings.contains("lastIwadIndex"))
     {
         QModelIndex index = iwadlist->index( settings.value("lastIwadIndex").toInt(), 0);
@@ -187,15 +196,19 @@ void RocketLauncher2::parseCmdLine(int argc, char *argv[])
 {
     if (argc < 2)
         return;
+
     QCommandLineParser parser;
     QStringList args;
+
     for (int i = 0; i < argc; i++)
     {
         args << argv[i];
     }
+
     parser.process(args);
     const QStringList posargs = parser.positionalArguments();
     //QMessageBox::information(this,"Test",posargs.at(0));
+
     if (posargs.size() > 0)
     {
         QString rocketCheck = posargs.at(0);
@@ -221,16 +234,20 @@ QStringList RocketLauncher2::genCommandline()
     {
         return genDOSBoxcmd();
     }
+
     QStringList ret;
     QString iwadpath = returnSelectedDndViewItemData(ui->listbox_IWADs);
     bool filesadded = false;
     ret << "-IWAD";
+
     if (iwadpath == "")
     {
         ret << "fail_IWADSELECT";
         return ret;
     }
+
     ret << iwadpath;
+
     if (reslist->rowCount() > 0)
     {
         for (int i = 0; i < reslist->rowCount(); i++)
@@ -246,6 +263,7 @@ QStringList RocketLauncher2::genCommandline()
             }
         }
     }
+
     if (pwadloadlist->rowCount() > 0)
     {
         for (int i = 0; i < pwadloadlist->rowCount(); i++ )
@@ -261,6 +279,7 @@ QStringList RocketLauncher2::genCommandline()
             }
         }
     }
+
     if (ui->input_map->text() != "" && ui->input_map->text() != NULL)
     {
         if (enginelist->getEngineType() == Engine_ZDoom)
@@ -274,22 +293,28 @@ QStringList RocketLauncher2::genCommandline()
             ret.append(warp);
         }
     }
+
     if (ui->combo_skill->currentText() != "Default")
     {
         qint16 skill = ui->combo_skill->currentIndex();
         ret << "-skill" << QString::number(skill);
     }
+
     if (ui->check_nomonsters->isChecked())
         ret << "-nomonsters";
+
     if (ui->check_nomusic->isChecked())
         ret << "-nomusic";
+
     if (ui->check_record->isChecked())
     {
         ret << "-record";
         ret << ui->input_record->text();
     }
+
     if (ui->input_argbox->text() != "" && ui->input_argbox->text() != NULL)
         ret.append(splitArgs(ui->input_argbox->text()));
+
     return ret;
 }
 
@@ -299,11 +324,13 @@ QStringList RocketLauncher2::genDOSBoxcmd()
     QStringList dosTemp;
     QFileInfo doomExeFile(enginelist->DoomExePath);
     QDir root(doomExeFile.absolutePath());
+
     if (!doomExeFile.exists())
     {
         ret << "fail_DOOMEXE";
         return ret;
     }
+
     QString mountfold = doomExeFile.absolutePath();
     ret << "-c";
     ret << "MOUNT C " + root.rootPath();
@@ -314,6 +341,7 @@ QStringList RocketLauncher2::genDOSBoxcmd()
     ret << "-c";
     ret << "aspect = true";
     bool filesadded = false;
+
     if (reslist->rowCount() > 0)
     {
         for (int i = 0; i < reslist->rowCount(); i++)
@@ -329,6 +357,7 @@ QStringList RocketLauncher2::genDOSBoxcmd()
             }
         }
     }
+
     if (pwadloadlist->rowCount() > 0)
     {
         for (int i = 0; i < pwadloadlist->rowCount(); i++ )
@@ -344,40 +373,51 @@ QStringList RocketLauncher2::genDOSBoxcmd()
             }
         }
     }
+
     if (ui->input_map->text() != "" && ui->input_map->text() != NULL)
     {
         dosTemp << "-warp" << ui->input_map->text();
     }
+
     if (ui->combo_skill->currentText() != "Default")
     {
         qint16 skill = ui->combo_skill->currentIndex();
         dosTemp << "-skill" << QString::number(skill);
     }
+
     if (ui->check_nomonsters->isChecked())
         dosTemp << "-nomonsters";
+
     if (ui->check_nomusic->isChecked())
         dosTemp << "-nomusic";
+
     if (ui->check_record->isChecked())
         dosTemp << "-record " + ui->input_record->text();
+
     if (ui->input_argbox->text() != "" && ui->input_argbox->text() != NULL)
         dosTemp.append(ui->input_argbox->text().split(" "));
+
     ret << "-c";
     ret << doomExeFile.fileName() + " " + dosTemp.join(" ");
     ret << "-c";
     ret << "exit";
+
     return ret;
 }
 
 void RocketLauncher2::on_pushButton_3_clicked() //RUN
 {
     QString enginefile;
+
     if (!enginelist->EngineSet)
     {
         QMessageBox::information(this,"Error" ,"Please select or add an engine (source port).");
         return;
     }
+
     enginefile = enginelist->getCurrentEngine()->path;
     QStringList cmd = genCommandline();
+
     if (cmd[1] == "fail_IWADSELECT")
     {
         QMessageBox::information(this,"Error" ,"Please select your IWAD");
@@ -388,15 +428,18 @@ void RocketLauncher2::on_pushButton_3_clicked() //RUN
         QMessageBox::information(this,"Error" , "Could not find original Doom Executable for DOSBox");
         return;
     }
+
     if (ui->check_showcmdline->isChecked())
     {
         QString showargs;
         showargs = cmd.join("\n");
         QMessageBox::information(this,"Command Line" ,showargs);
     }
+
     QFileInfo engineDir(enginefile);
     QDir::setCurrent(engineDir.absolutePath());
     process = new QProcess();
+
     try
     {
         process->start(enginefile,cmd);
@@ -413,6 +456,7 @@ void RocketLauncher2::on_pushButton_2_clicked() //Select Engine
 {
     QFileInfo file = QFileInfo(QFileDialog::getOpenFileName(this,tr("Locate engine executable")));
     QString result = enginelist->addEngine(file);
+
     if (result == "Error")
         QMessageBox::information(this,"Error","Something went wrong, no engine added.");
 }
@@ -486,6 +530,7 @@ void RocketLauncher2::addToFavorites(const QString filepath)
 void RocketLauncher2::updateFavs(QString filepath, bool save)
 {
     bool noMatch = updateDndListView(filepath, favlist, false);
+
     if (save)
     {
         if (noMatch)
@@ -502,7 +547,6 @@ void RocketLauncher2::on_button_pwadsclear_clicked()
 {
     pwadloadlist->clear();
 }
-
 
 void RocketLauncher2::on_button_remove_clicked()
 {
@@ -534,7 +578,8 @@ void RocketLauncher2::copyItemToPwads(QDropEvent* pEvent)
 void RocketLauncher2::copyItemToFav(QDropEvent* pEvent)
 {
     this->setUpdatesEnabled(false);
-    copyItemToDndListViewSave(qobject_cast<DndFileSystemListView *>(pEvent->source()), favlist, false, "pwad_favs", "fav_path", settings);
+    copyItemToDndListViewSave(qobject_cast<DndFileSystemListView *>(pEvent->source()), favlist,
+                              false, "pwad_favs", "fav_path", settings);
     this->setUpdatesEnabled(true);
 }
 
@@ -546,6 +591,7 @@ void RocketLauncher2::on_button_addiwad_clicked()
 void RocketLauncher2::updateIWADs(QString filepath, bool save)
 {
     bool noMatch = updateDndListView(filepath, iwadlist, false);
+
     if (save)
     {
         if (noMatch)
@@ -561,7 +607,8 @@ void RocketLauncher2::on_button_deliwad_clicked()
 void RocketLauncher2::copyItemToIwads(QDropEvent* pEvent)
 {
     this->setUpdatesEnabled(false);
-    copyItemToDndListViewSave(qobject_cast<DndFileSystemListView *>(pEvent->source()), iwadlist, false, "iwads", "iwad_path", settings);
+    copyItemToDndListViewSave(qobject_cast<DndFileSystemListView *>(pEvent->source()), iwadlist,
+                              false, "iwads", "iwad_path", settings);
     this->setUpdatesEnabled(true);
 }
 
@@ -578,6 +625,7 @@ void RocketLauncher2::on_button_addres_clicked()
 void RocketLauncher2::updateres(QString filepath, bool save)
 {
     bool noMatch = updateDndListView(filepath, reslist, true, false);
+
     if (save)
     {
         if (noMatch)
@@ -614,6 +662,7 @@ bool RocketLauncher2::savesettings(QString key, QString value)
 {
     if (key == "" || key == NULL || value == "" || value == NULL)
         return false;
+
     //QSettings settings("RetroTools");
     settings.setValue(key, value);
     return true;
@@ -621,5 +670,7 @@ bool RocketLauncher2::savesettings(QString key, QString value)
 
 void RocketLauncher2::on_button_helpmap_clicked()
 {
-    QMessageBox::information(this,"Map/Warp","If the engine is a modern ZDoom based engine, use the maplump name, e.g. 'MAP01', otherwise if it's a more oldschool engine, use the map number, e.g. '01'");
+    QMessageBox::information(this, "Map/Warp",
+                             "If the engine is a modern ZDoom based engine, use the maplump name, " +
+                             "e.g. 'MAP01', otherwise if it's a more oldschool engine, use the map number, e.g. '01'");
 }

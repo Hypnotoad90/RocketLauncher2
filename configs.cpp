@@ -60,22 +60,26 @@ void RocketLauncher2::initConfigs()
         }
         conflist->addRocket(rocket);
     }
+
     ConfigSettings.endArray();
 }
 
 void RocketLauncher2::on_button_addConfToFav_clicked()
 {
     QString name = ui->input_confName->text();
+
     if (!inputExists(name))
     {
         QMessageBox::information(this,"Input Name", "Please input a name for this config to be saved");
         return;
     }
+
     if (getIndexOfDisplayText(conflist,ui->input_confName->text()) != QModelIndex())
     {
         QMessageBox::information(this, "Change Name" , "A profile of this name already exists!");
         return;
     }
+
     RocketFile rocket = makeConfigFromCurrent(name);
     conflist->addRocket(rocket);
     saveToGlobal(rocket);
@@ -87,6 +91,7 @@ RocketFile RocketLauncher2::makeConfigFromCurrent(QString name)
     rocket.name = name;
     rocket.engName = enginelist->getCurrentEngine()->name;
     rocket.iwadName = returnSelectedDndViewItemData(ui->listbox_IWADs, Qt::DisplayRole);
+
     for (int row = 0; row < reslist->rowCount(); row++)
     {
         if (reslist->item(row)->checkState() == Qt::Checked)
@@ -96,6 +101,7 @@ RocketFile RocketLauncher2::makeConfigFromCurrent(QString name)
     {
         rocket.filePaths.append(pwadloadlist->item(row)->data(Qt::UserRole).toString());
     }
+
     rocket.map = ui->input_map->text();
     rocket.skill = ui->combo_skill->currentIndex();
     rocket.addCmd = ui->input_argbox->text();
@@ -103,6 +109,7 @@ RocketFile RocketLauncher2::makeConfigFromCurrent(QString name)
     rocket.demoName = ui->input_record->text();
     rocket.noMonsters = ui->check_nomonsters->isChecked();
     rocket.noMusic = ui->check_nomusic->isChecked();
+
     for (int i = 0; i < pwadloadlist->rowCount(); i++)
     {
         if (pwadloadlist->item(i)->checkState() == Qt::Checked)
@@ -110,6 +117,7 @@ RocketFile RocketLauncher2::makeConfigFromCurrent(QString name)
         else
             rocket.filesChecked.append(QVariant(false));
     }
+
     return rocket;
 }
 
@@ -117,6 +125,7 @@ void RocketLauncher2::applyConfig(RocketFile *rocket)
 {
     if (rocket->name == "fail")
         return;
+
     if (ui->combo_Engines->findText(rocket->engName) > -1)
     {
         ui->combo_Engines->setCurrentText(rocket->engName);
@@ -126,6 +135,7 @@ void RocketLauncher2::applyConfig(RocketFile *rocket)
     {
         QMessageBox::information(this, "Engine not found!", QString("Warning, %1 engine could not be found.").arg(rocket->engName));
     }
+
     QModelIndexList indexes = iwadlist->match(iwadlist->index(0,0),Qt::DisplayRole,QVariant::fromValue(rocket->iwadName));
     if (indexes.count() > 0)
     {
@@ -136,6 +146,7 @@ void RocketLauncher2::applyConfig(RocketFile *rocket)
     {
         QMessageBox::information(this, "IWAD not found!", QString("Warning, %1 IWAD could not be found.").arg(rocket->iwadName));
     }
+
     for (int i = 0; i < rocket->resPaths.count(); i++)
     {
         QModelIndexList resindex = reslist->match(reslist->index(0,0),Qt::UserRole,QVariant::fromValue(rocket->resPaths.at(i)));
@@ -148,7 +159,9 @@ void RocketLauncher2::applyConfig(RocketFile *rocket)
             QMessageBox::information(this, "File Missing" , QString("Resource file missing (%1)").arg(rocket->resPaths.at(i)));
         }
     }
+
     pwadloadlist->clear();
+
     if (rocket->filePaths.count() == rocket->filesChecked.count())
     {
         for (int i = 0; i < rocket->filePaths.count(); i++)
@@ -160,6 +173,7 @@ void RocketLauncher2::applyConfig(RocketFile *rocket)
                 pwadloadlist->item(i)->setCheckState(Qt::Unchecked);
         }
     }
+
     else
     {
         for (int i = 0; i < rocket->filePaths.count(); i++)
@@ -167,6 +181,7 @@ void RocketLauncher2::applyConfig(RocketFile *rocket)
             addpwad(rocket->filePaths.at(i));
         }
     }
+
     ui->input_map->setText(rocket->map);
     ui->combo_skill->setCurrentIndex(rocket->skill);
     ui->input_argbox->setText(rocket->addCmd);
@@ -203,20 +218,25 @@ void RocketLauncher2::saveToExternal(RocketFile &rocket, QString name)
     rocketSetting.setValue("noMonsters",rocket.noMonsters);
     rocketSetting.setValue("noMusic",rocket.noMusic);
     QVariantList filesCheckedVariant;
-    foreach(auto v, rocket.filesChecked) {
-      filesCheckedVariant << v;
+
+    foreach (auto v, rocket.filesChecked)
+    {
+        filesCheckedVariant << v;
     }
+
     rocketSetting.setValue("filesChecked", filesCheckedVariant);
 }
 
 void RocketLauncher2::on_button_saveConfigExt_clicked()
 {
     QString name = ui->input_confName->text();
+
     if (!inputExists(name))
     {
         QMessageBox::information(this,"Input Name", "Please input a name for this config to be saved");
         return;
     }
+
     RocketFile rocket = makeConfigFromCurrent(name);
     saveToExternal(rocket, name);
 
@@ -241,9 +261,12 @@ void RocketLauncher2::saveToGlobal(RocketFile &rocket)
     ConfigSettings.setValue("noMonsters",rocket.noMonsters);
     ConfigSettings.setValue("noMusic",rocket.noMusic);
     QVariantList filesCheckedVariant;
-    foreach(auto v, rocket.filesChecked) {
-      filesCheckedVariant << v;
+
+    foreach (auto v, rocket.filesChecked)
+    {
+        filesCheckedVariant << v;
     }
+
     ConfigSettings.setValue("filesChecked", filesCheckedVariant);
     ConfigSettings.endArray();
 }
@@ -263,10 +286,13 @@ void RocketLauncher2::saveToGlobalFromList(RocketFile *rocket, int index)
     ConfigSettings.setValue("demoName",rocket->demoName);
     ConfigSettings.setValue("noMonsters",rocket->noMonsters);
     ConfigSettings.setValue("noMusic",rocket->noMusic);
+
     QVariantList filesCheckedVariant;
-    foreach(auto v, rocket->filesChecked) {
-      filesCheckedVariant << v;
+    foreach (auto v, rocket->filesChecked)
+    {
+        filesCheckedVariant << v;
     }
+
     ConfigSettings.setValue("filesChecked", filesCheckedVariant);
 }
 
@@ -275,17 +301,21 @@ void RocketLauncher2::on_button_delConfig_clicked()
     ui->listbox_configFavs->setUpdatesEnabled(false);
     QModelIndexList indexes = ui->listbox_configFavs->selectionModel()->selectedIndexes();
     qSort(indexes.begin(), indexes.end());
+
     for (int i = indexes.count() - 1; i > -1; --i)
     {
         conflist->removeRow(indexes.at(i).row());
     }
+
     ui->listbox_configFavs->setUpdatesEnabled(true);
     ConfigSettings.beginWriteArray("configs");
     ConfigSettings.remove("");
+
     for (int i = 0; i < conflist->rowCount(); i++)
     {
         saveToGlobalFromList(conflist->getRocketFromRow(i),i);
     }
+
     ConfigSettings.endArray();
 }
 
@@ -307,9 +337,12 @@ void RocketLauncher2::loadExtConfig(QString path)
         rocket->demoName = ConfigSettings.value("demoName").toString();
         rocket->noMonsters = ConfigSettings.value("noMonsters").toBool();
         rocket->noMusic = ConfigSettings.value("noMusic").toBool();
-        foreach(QVariant v, ConfigSettings.value("filesChecked").toList()) {
-          rocket->filesChecked << v.toBool();
+
+        foreach( QVariant v, ConfigSettings.value("filesChecked").toList())
+        {
+            rocket->filesChecked << v.toBool();
         }
+
         applyConfig(rocket);
         delete rocket;
     }
