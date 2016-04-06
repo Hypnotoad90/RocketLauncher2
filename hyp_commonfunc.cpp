@@ -28,38 +28,31 @@
 
 bool inputExists (QString &name)
 {
-    if (name == "" || name.isEmpty() || name.isNull())
-        return false;
-    else return true;
+    return (name == "" || name.isEmpty() || name.isNull());
 }
 
 bool fileExists (QString &file)
 {
     QFileInfo fi(file);
-    if (fi.exists())
-        return true;
-    else
-        return false;
+    return (fi.exists());
 }
 
 bool isFile(QString &file)
 {
     QFileInfo fi(file);
-    if (fi.isFile())
-        return true;
-    else
-        return false;
+    return (fi.isFile());
 }
 void removeSelectedFromDnDListView(DndFileSystemListView *listview, QStandardItemModel *model)
 {
     listview->setUpdatesEnabled(false);
     QModelIndexList indexes = listview->selectionModel()->selectedIndexes();
     qSort(indexes.begin(), indexes.end());
+    
     for (int i = indexes.count() - 1; i > -1; --i)
     {
         model->removeRow(indexes.at(i).row());
-
     }
+    
     listview->setUpdatesEnabled(true);
 }
 
@@ -68,24 +61,28 @@ void removeSelectedFromDnDListViewSave(DndFileSystemListView *listview, QStandar
     listview->setUpdatesEnabled(false);
     QModelIndexList indexes = listview->selectionModel()->selectedIndexes();
     qSort(indexes.begin(), indexes.end());
+    
     for (int i = indexes.count() - 1; i > -1; --i)
     {
         model->removeRow(indexes.at(i).row());
 
     }
+    
     settings.beginWriteArray(ArrayName);
     settings.remove("");
+    
     for (int i = 0; i < model->rowCount(); i++)
     {
         settings.setArrayIndex(i);
         settings.setValue(key, model->item(i)->data(Qt::UserRole).toString());
     }
+    
     settings.endArray();
     listview->setUpdatesEnabled(true);
 }
 
 
-bool updateDndListView(QString filepath, QStandardItemModel *model, bool checkable, bool checksate)
+bool updateDndListView(QString filepath, QStandardItemModel *model, bool checkable, bool checkstate)
 {
     QFileInfo file(filepath);
     if (!file.exists())
@@ -93,21 +90,22 @@ bool updateDndListView(QString filepath, QStandardItemModel *model, bool checkab
 
     QStandardItem *item = new QStandardItem();
 
-    item->setData(file.fileName(),Qt::DisplayRole);
-    item->setData(file.absoluteFilePath(),Qt::UserRole);
+    item->setData(file.fileName(), Qt::DisplayRole);
+    item->setData(file.absoluteFilePath(), Qt::UserRole);
     item->setDragEnabled(true);
     item->setDropEnabled(false);
+    
     if (checkable)
     {
         item->setCheckable(true);
-        if (checksate)
-            item->setCheckState(Qt::Checked);
-        else
-            item->setCheckState(Qt::Unchecked);
+        item->setCheckState(checkstate ? Qt::Checked : Qt::Unchecked);
     }
+    
     if (model->match(model->index(0,0) , Qt::UserRole, file.absoluteFilePath()).size() > 0)
         return false;
+        
     model->appendRow(item);
+    
     return true;
 }
 
@@ -125,6 +123,7 @@ void copyItemToDndListView(DndFileSystemListView *source, QStandardItemModel *De
 {
     QModelIndexList indexes = source->selectionModel()->selectedIndexes();
     qSort(indexes.begin(), indexes.end());
+    
     for (int i = indexes.count() - 1; i > -1; --i)
       updateDndListView(indexes.at(i).data(Qt::UserRole).toString(), DestinationModel, checkable);
 }
@@ -133,6 +132,7 @@ void copyItemToDndListViewSave(DndFileSystemListView *source, QStandardItemModel
 {
     QModelIndexList indexes = source->selectionModel()->selectedIndexes();
     qSort(indexes.begin(), indexes.end());
+    
     for (int i = indexes.count() - 1; i > -1; --i)
     {
         if (updateDndListView(indexes.at(i).data(Qt::UserRole).toString(), DestinationModel, checkable))
@@ -143,8 +143,10 @@ void copyItemToDndListViewSave(DndFileSystemListView *source, QStandardItemModel
 QString returnSelectedDndViewItemData(DndFileSystemListView *listview, int role)
 {
     QModelIndexList indexes = listview->selectionModel()->selectedIndexes();
+    
     if (indexes.count() < 1)
         return "";
+        
     qSort(indexes.begin(), indexes.end());
     return indexes.at(0).data(role).toString();
 }
@@ -152,6 +154,7 @@ QString returnSelectedDndViewItemData(DndFileSystemListView *listview, int role)
 QModelIndex getIndexOfDisplayText(QAbstractItemModel *model, QString text)
 {
     QModelIndexList indexes = model->match(model->index(0,0),Qt::DisplayRole,QVariant::fromValue(text));
+    
     if (indexes.count()> 0)
         return indexes.at(0);
     else
@@ -161,10 +164,13 @@ QModelIndex getIndexOfDisplayText(QAbstractItemModel *model, QString text)
 QStringList splitArgs(QString string) //useful approach, found here: qtcentre.org/threads/37304-Split-strings-using-QStringList-split%28%29-but-ignore-quotes?p=213884#post213884
 {
     bool inside = false;
+    
     if (string.at(0) == '\"')
         inside = true; //true if the first character is "
+        
     QStringList tmpList = string.split(QRegExp("\""), QString::SkipEmptyParts); // Split by " and make sure you don't have an empty string at the beginning
     QStringList retlist;
+    
     foreach (QString s, tmpList)
     {
         if (inside)
@@ -177,5 +183,6 @@ QStringList splitArgs(QString string) //useful approach, found here: qtcentre.or
         }
         inside = !inside;
     }
+    
     return retlist;
 }
