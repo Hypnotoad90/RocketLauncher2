@@ -44,6 +44,7 @@ void EngineListModel::setCurrentEngine(const int index)
 {
     qDebug() << "Udating Engine at index " << index;
     //qDebug().quote();
+
     if (index >= Engines_.size()) return;
     else
     {
@@ -51,6 +52,7 @@ void EngineListModel::setCurrentEngine(const int index)
         if (!EngineSet)
             EngineSet = true;
     }
+
     EngineSettings.setValue("Last Index", index);
 }
 
@@ -63,8 +65,10 @@ QString EngineListModel::addEngine(QFileInfo file)
 {
     if (!file.exists())
         return "Error";
+
     qDebug() << "Adding Engine";
     //qDebug().quote();
+
     if (file.baseName().compare( QString("zandronum"), Qt::CaseInsensitive) == 0)
     {
         return updateEngine("Zandronum", file.absoluteFilePath(), Engine_ZDoom, Pic_Zandronum, true);
@@ -144,6 +148,7 @@ QString EngineListModel::updateEngine(QString engine, QString path, EngineType t
 {
     int searchResult;
     searchResult = SearchEngines(engine);
+
     if (searchResult > -1)
     {
         Engines_[searchResult].path = path;
@@ -154,12 +159,15 @@ QString EngineListModel::updateEngine(QString engine, QString path, EngineType t
 
         return "Success";
     }
+
     EngineInfo newengine = {path, engine, type, pic};
     Engines_ << newengine;
+
     if (known)
         QMessageBox::information(NULL,"Executable Added",QString("%1 engine added!").arg(engine));
     else
         QMessageBox::information(NULL,"Unkown executable","Unrecognized engine added!");
+
     emit updateCombo(engine);
     emit dataChanged(QModelIndex(),QModelIndex());
     SaveEngineData();
@@ -169,22 +177,27 @@ QString EngineListModel::updateEngine(QString engine, QString path, EngineType t
 
 QVariant EngineListModel::data(const QModelIndex& index, int role) const {
     // Check that the index is valid and within the correct range first:
-    if (!index.isValid()) {
+    if (!index.isValid())
+    {
         return QVariant();
     }
+
     if (index.row() >= Engines_.size())
     {
         return QVariant();
     }
 
-    if (role == Qt::DisplayRole) {
+    if (role == Qt::DisplayRole)
+    {
         // Only returns something for the roles you support (DisplayRole is a minimum)
         return QVariant(Engines_.at(index.row()).name);
     }
-    else if (role == Qt::UserRole) {
+    else if (role == Qt::UserRole)
+    {
         return QVariant(Engines_.at(index.row()).path);
     }
-    else {
+    else
+    {
         return QVariant();
     }
 }
@@ -199,6 +212,7 @@ int EngineListModel::SearchEngines(const QString name)
             return Engines_.indexOf(engine);
         }
     }
+
     return -1;
 }
 
@@ -215,9 +229,11 @@ void EngineListModel::LoadEngineData()
                                };
         Engines_.append(newengine);
     }
+
     EngineSettings.endArray();
     if (EngineSettings.contains("doomexe"))
         DoomExePath = EngineSettings.value("doomexe").toString();
+
     emit dataChanged(QModelIndex(),QModelIndex());
     int lastIndex = EngineSettings.value("Last Index").toInt();
     setCurrentEngine(lastIndex);
@@ -235,6 +251,7 @@ void EngineListModel::SaveEngineData()
         EngineSettings.setValue("type", static_cast<int>(Engines_.at(i).type));
         EngineSettings.setValue("image", static_cast<int>(Engines_.at(i).EngineImage));
     }
+
     EngineSettings.endArray();
     if (DoomExePath != "" && DoomExePath != NULL)
         EngineSettings.setValue("doomexe",DoomExePath);
@@ -269,6 +286,7 @@ void EngineListModel::setupDosbox(QString path)
         SaveEngineData();
         return;
     }
+
     EngineInfo newengine = {path, "DOSBox", Engine_DosBox, Pic_Default};
     Engines_ << newengine;
     QMessageBox::information(NULL,"Executable Added",QString("DOSBox engine added. You must now find your original iD Engine executable (e.g. DOOM2.EXE)"));
@@ -283,11 +301,13 @@ void EngineListModel::setDoomExe()
 {
     QString tempPath = QFileDialog::getOpenFileName(NULL, "Find your original iD Engine executable (e.g. DOOM2.EXE)");
     QFileInfo doomfile(tempPath);
+
     if (!doomfile.exists())
     {
         QMessageBox::warning(NULL,"Error",QString("Failed to add iD executable!"));
         return;
     }
+
     DoomExePath = tempPath;
     QString n = doomfile.baseName();
     if (n.left(4).compare("doom", Qt::CaseInsensitive) == 0
@@ -320,6 +340,7 @@ void EngineListModel::addDefaultEngine(QString path)
         QMessageBox::information(NULL,"Error",QString("Failed to add executable."));
         return;
     }
+
     EngineInfo newengine = {path, "Custom engine", Engine_Default, Pic_Default};
     Engines_ << newengine;
     QMessageBox::information(NULL,"Executable Added",QString("Custom engine added!"));
@@ -332,8 +353,10 @@ void EngineListModel::setNameFromIndex(QString name, const QModelIndex &index)
 {
     if (!index.isValid())
         return;
+
     if (index.row() >= Engines_.size())
         return;
+
     Engines_[index.row()].name = name;
     emit dataChanged(QModelIndex(),QModelIndex());
     SaveEngineData();
@@ -343,8 +366,10 @@ void EngineListModel::setPathFromIndex(QString path, const QModelIndex &index)
 {
     if (!index.isValid())
         return;
+
     if (index.row() >= Engines_.size())
         return;
+
     Engines_[index.row()].path = path;
     emit dataChanged(QModelIndex(),QModelIndex());
     SaveEngineData();
@@ -354,8 +379,10 @@ void EngineListModel::setTypeFromIndex(EngineType type, const QModelIndex &index
 {
     if (!index.isValid())
         return;
+
     if (index.row() >= Engines_.size())
         return;
+
     Engines_[index.row()].type = type;
     emit dataChanged(QModelIndex(),QModelIndex());
     SaveEngineData();
@@ -365,8 +392,10 @@ void EngineListModel::setPicFromIndex(EnginePic pic, const QModelIndex &index)
 {
     if (!index.isValid())
         return;
+
     if (index.row() >= Engines_.size())
         return;
+
     Engines_[index.row()].EngineImage = pic;
     emit dataChanged(QModelIndex(),QModelIndex());
     SaveEngineData();
@@ -380,9 +409,6 @@ void EngineListModel::setDoomExeSave()
 }
 
 //========================Configs=======================
-
-
-
 ConfigListModel::ConfigListModel(QObject *parent) :QAbstractListModel(parent)
 {
     failRocket = RocketFile();
@@ -404,12 +430,14 @@ QVariant ConfigListModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid()) return QVariant();
     if (index.row() >= rockets.size()) return QVariant();
 
-    if (role == Qt::DisplayRole) {
+    if (role == Qt::DisplayRole)
+    {
         // Only returns something for the roles you support (DisplayRole is a minimum)
 
         return QVariant(rockets.at(index.row()).name);
     }
-    else {
+    else
+    {
         return QVariant();
     }
 }

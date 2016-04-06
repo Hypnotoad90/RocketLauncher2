@@ -33,17 +33,18 @@ void RocketLauncher2::on_button_detectEng_clicked()
     on_pushButton_2_clicked();
 }
 
-
 void RocketLauncher2::on_button_removeEng_clicked()
 {
     ui->listbox_engines->setUpdatesEnabled(false);
     ui->combo_Engines->setUpdatesEnabled(false);
     QModelIndexList indexes = ui->listbox_engines->selectionModel()->selectedIndexes();
     qSort(indexes.begin(), indexes.end());
+
     for (int i = indexes.count() - 1; i > -1; --i)
     {
         enginelist->removeRow(indexes.at(i).row());
     }
+
     ui->listbox_engines->setUpdatesEnabled(true);
     ui->combo_Engines->setUpdatesEnabled(true);
     enginelist->EngineSettings.beginWriteArray("Engines");
@@ -62,6 +63,7 @@ void RocketLauncher2::on_listbox_engines_clicked(const QModelIndex &index)
                 enginelist->data(index,Qt::UserRole).toString()
                 );
     EngineType temptype = enginelist->getEngineTypeFromIndex(index);
+
     if (temptype == Engine_Default)
         ui->combo_EngType->setCurrentText("Default");
     else if (temptype == Engine_DosBox)
@@ -70,7 +72,9 @@ void RocketLauncher2::on_listbox_engines_clicked(const QModelIndex &index)
         ui->combo_EngType->setCurrentText("Oldschool");
     else if (temptype == Engine_ZDoom)
         ui->combo_EngType->setCurrentText("ZDoom");
+
     EnginePic pic = enginelist->getEnginePicFromIndex(index);
+
     if (pic == Pic_Default)
         ui->combo_EngPic->setCurrentText("Default");
     else if (pic == Pic_Zandronum)
@@ -109,9 +113,11 @@ void RocketLauncher2::on_button_addCustEng_clicked()
 
 void RocketLauncher2::on_input_selEngName_returnPressed()
 {
+
     QModelIndex index = ui->listbox_engines->selectionModel()->selectedIndexes()[0];
     if (ui->input_selEngName->text() == enginelist->data(index, Qt::DisplayRole))
         return;
+
     if (getIndexOfDisplayText(enginelist,ui->input_selEngName->text()) == QModelIndex())
     {
         enginelist->setNameFromIndex(ui->input_selEngName->text(), index);
@@ -135,6 +141,7 @@ void RocketLauncher2::on_button_selEngBrowse_clicked()
 void RocketLauncher2::on_combo_EngType_currentTextChanged(const QString &arg1)
 {
     QModelIndex index = ui->listbox_engines->selectionModel()->selectedIndexes()[0];
+
     if (arg1 == "Default")
         enginelist->setTypeFromIndex(Engine_Default, index);
     else if (arg1 == "DosBox")
@@ -148,6 +155,7 @@ void RocketLauncher2::on_combo_EngType_currentTextChanged(const QString &arg1)
 void RocketLauncher2::on_combo_EngPic_currentTextChanged(const QString &arg1)
 {
     QModelIndex index = ui->listbox_engines->selectionModel()->selectedIndexes()[0];
+
     if (arg1 == "Default")
         enginelist->setPicFromIndex(Pic_Default, index);
     else if (arg1 == "Zandronum")
@@ -176,6 +184,7 @@ void RocketLauncher2::on_combo_EngPic_currentTextChanged(const QString &arg1)
         enginelist->setPicFromIndex(Pic_ZDaemon, index);
     else if (arg1 == "Zdoom")
         enginelist->setPicFromIndex(Pic_Zdoom, index);
+
     SetEnginePic(enginelist->getCurrentEngine()->EngineImage);
 }
 
