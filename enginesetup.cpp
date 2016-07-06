@@ -131,10 +131,17 @@ void RocketLauncher2::on_input_selEngName_returnPressed()
 
 void RocketLauncher2::on_button_selEngBrowse_clicked()
 {
-    QModelIndex index = ui->listbox_engines->selectionModel()->selectedIndexes()[0];
-    QString path = QFileDialog::getOpenFileName(this, "Locate executable.");
-    enginelist->setPathFromIndex(path, index);
-    ui->input_selEngPath->setText(path);
+    if (ui->listbox_engines->selectionModel()->selectedIndexes().size() > 0)
+    {
+        QModelIndex index = ui->listbox_engines->selectionModel()->selectedIndexes()[0];
+        QString path = QFileDialog::getOpenFileName(this, "Locate executable.");
+        enginelist->setPathFromIndex(path, index);
+        ui->input_selEngPath->setText(path);
+    }
+    else
+    {
+        QMessageBox::information(NULL, "Select engine first!", "Please select an engine from the listbox to the left first. If you wish to add a new engine, select 'Add Custom' or 'Detect from File' on the bottom left");
+    }
 }
 
 
