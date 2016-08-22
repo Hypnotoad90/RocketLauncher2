@@ -454,11 +454,14 @@ void RocketLauncher2::on_pushButton_3_clicked() //RUN
 
 void RocketLauncher2::on_pushButton_2_clicked() //Select Engine
 {
-    QFileInfo file = QFileInfo(QFileDialog::getOpenFileName(this,tr("Locate engine executable")));
-    QString result = enginelist->addEngine(file);
-
-    if (result == "Error")
-        QMessageBox::information(this,"Error","Something went wrong, no engine added.");
+    QString engine = QFileDialog::getOpenFileName(this,tr("Locate engine executable"));
+    if (engine != NULL)
+    {
+        QFileInfo file = QFileInfo(engine);
+        QString result = enginelist->addEngine(file);
+            if (result == "Error")
+                QMessageBox::information(this,"Error","Something went wrong, no engine added.");
+    }
 }
 
 void RocketLauncher2::on_combo_Engines_currentIndexChanged(int index)
