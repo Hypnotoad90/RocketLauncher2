@@ -76,6 +76,17 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
 
     parseCmdLine(argc,argv);
     //ui->listbox_pwadload->setDragDropOverwriteMode(false);
+
+    pwadFilter = tr("WAD/PK3/ZIP/PK7/PKZ/P7Z "
+            "(*.wad *.pk3 *.zip *.pk7 *.pkz"
+            ";;WAD Files (*.wad)"
+            ";;PK3 Files (*.pk3)"
+            ";;Patch Files (*.bex *.deh)"
+            ";;PK7 Files (*.pk7)"
+            ";;PKZ Files (*.pkz)"
+            ";;P7Z Files (*.p7z)"
+            ";;zip Files (*.zip)"
+            ";;Any files (*)");
 }
 
 RocketLauncher2::~RocketLauncher2()
@@ -540,7 +551,19 @@ void RocketLauncher2::updateFavs(QString filepath, bool save)
 
 void RocketLauncher2::on_button_add_clicked()
 {
-    addpwad(QFileDialog::getOpenFileName(this,tr("Add a pwad")));
+    /*
+    const QString filter = tr("WAD/PK3/ZIP/PK7/PKZ/P7Z "
+            "(*.wad *.pk3 *.zip *.pk7 *.pkz"
+            ";;WAD Files (*.wad)"
+            ";;PK3 Files (*.pk3)"
+            ";;Patch Files (*.bex *.deh)"
+            ";;PK7 Files (*.pk7)"
+            ";;PKZ Files (*.pkz)"
+            ";;P7Z Files (*.p7z)"
+            ";;zip Files (*.zip)"
+            ";;Any files (*)");
+            */
+    addpwad(QFileDialog::getOpenFileName(this,tr("Add a pwad"),"",pwadFilter));
 }
 
 void RocketLauncher2::on_button_pwadsclear_clicked()
@@ -557,7 +580,7 @@ void RocketLauncher2::on_button_remove_clicked()
 
 void RocketLauncher2::on_button_favadd_clicked()
 {
-    updateFavs(QFileDialog::getOpenFileName(this,tr("Add a file to your favorites!")), true);
+    updateFavs(QFileDialog::getOpenFileName(this,tr("Add a file to your favorites!"),"",pwadFilter), true);
 }
 
 void RocketLauncher2::on_button_favremove_clicked()
@@ -585,7 +608,13 @@ void RocketLauncher2::copyItemToFav(QDropEvent* pEvent)
 
 void RocketLauncher2::on_button_addiwad_clicked()
 {
-    updateIWADs(QFileDialog::getOpenFileName(this,tr("Locate an IWAD to add to the list.")), true);
+    QString title = tr("Locate an IWAD to add to the list.");
+    QString filter = tr("WAD/pk3/zip (*.WAD *.pk3 *.zip)"
+            ";;WAD Files (*.WAD)"
+            ";;pk3 Files (*.pk3)"
+            ";;zip Files (*.zip)"
+            ";;All files (*)");
+    updateIWADs(QFileDialog::getOpenFileName(this,title,"",filter), true);
 }
 
 void RocketLauncher2::updateIWADs(QString filepath, bool save)
@@ -619,7 +648,8 @@ void RocketLauncher2::addToIWADs(const QString filepath)
 
 void RocketLauncher2::on_button_addres_clicked()
 {
-    updateres(QFileDialog::getOpenFileName(this,tr("Locate a common resource file to add to the list.")), true);
+    QString title = tr("Locate a common resource file to add to the list.");
+    updateres(QFileDialog::getOpenFileName(this,title,"",pwadFilter), true);
 }
 
 void RocketLauncher2::updateres(QString filepath, bool save)

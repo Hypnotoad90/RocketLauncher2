@@ -159,6 +159,8 @@ private:
     void saveToGlobalFromList(RocketFile *rocket, int index);
     void saveToExternal(RocketFile &rocket, QString name);
     QSettings ConfigSettings;
+
+    QString pwadFilter;
 };
 
 #endif // ROCKETLAUNCHER2_H

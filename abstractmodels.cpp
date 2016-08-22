@@ -299,7 +299,9 @@ void EngineListModel::setupDosbox(QString path)
 
 void EngineListModel::setDoomExe()
 {
-    QString tempPath = QFileDialog::getOpenFileName(NULL, "Find your original iD Engine executable (e.g. DOOM2.EXE)");
+    QString title = tr("Find your original iD Engine executable (e.g. DOOM2.EXE)");
+    QString filter = tr("EXE Files (*.EXE);;All files (*)");
+    QString tempPath = QFileDialog::getOpenFileName(NULL, title, "", filter);
     QFileInfo doomfile(tempPath);
 
     if (!doomfile.exists())
