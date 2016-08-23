@@ -439,6 +439,7 @@ void RocketLauncher2::on_pushButton_3_clicked() //RUN
     QFileInfo engineDir(enginefile);
     QDir::setCurrent(engineDir.absolutePath());
     process = new QProcess();
+    process->setProcessChannelMode(QProcess::ForwardedChannels);
 
     try
     {
