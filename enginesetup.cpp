@@ -108,7 +108,11 @@ void RocketLauncher2::on_listbox_engines_clicked(const QModelIndex &index)
 
 void RocketLauncher2::on_button_addCustEng_clicked()
 {
-    enginelist->addDefaultEngine(QFileDialog::getOpenFileName(this, "Locate executable."));
+    QString engine = QFileDialog::getOpenFileName(this, "Locate executable.");
+    if (engine != NULL)
+    {
+        enginelist->addDefaultEngine(engine);
+    }
 }
 
 void RocketLauncher2::on_input_selEngName_returnPressed()
