@@ -29,7 +29,7 @@
 
 void RocketLauncher2::on_button_loadConfigExt_clicked()
 {
-    QString settingsDir = QFileDialog::getOpenFileName(this,"Choose where you wish to save the configuration.", QString(),"Rocket Files (*.rocket)");
+    QString settingsDir = QFileDialog::getOpenFileName(this,"Load a configuration file.", QString(),"Rocket Files (*.rocket)");
     if (settingsDir != NULL)
     {
         loadExtConfig(settingsDir);

@@ -78,7 +78,7 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
     //ui->listbox_pwadload->setDragDropOverwriteMode(false);
 
     pwadFilter = tr("WAD/PK3/ZIP/PK7/PKZ/P7Z "
-            "(*.wad *.pk3 *.zip *.pk7 *.pkz"
+            "(*.wad *.pk3 *.zip *.pk7 *.pkz)"
             ";;WAD Files (*.wad)"
             ";;PK3 Files (*.pk3)"
             ";;Patch Files (*.bex *.deh)"
