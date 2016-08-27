@@ -56,6 +56,7 @@ void RocketLauncher2::on_button_removeEng_clicked()
 
 void RocketLauncher2::on_listbox_engines_clicked(const QModelIndex &index)
 {
+    ui->groupBox_4->setEnabled(true);
     ui->input_selEngName->setText(
                 enginelist->data(index,Qt::DisplayRole).toString()
                 );
