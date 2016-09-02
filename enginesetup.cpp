@@ -152,6 +152,8 @@ void RocketLauncher2::on_button_selEngBrowse_clicked()
 
 void RocketLauncher2::on_combo_EngType_currentTextChanged(const QString &arg1)
 {
+    if (ui->listbox_engines->selectionModel()->selectedIndexes().size() < 1)
+        return;
     QModelIndex index = ui->listbox_engines->selectionModel()->selectedIndexes()[0];
 
     if (arg1 == "Default")
@@ -166,6 +168,8 @@ void RocketLauncher2::on_combo_EngType_currentTextChanged(const QString &arg1)
 
 void RocketLauncher2::on_combo_EngPic_currentTextChanged(const QString &arg1)
 {
+    if (ui->listbox_engines->selectionModel()->selectedIndexes().size() < 1)
+        return;
     QModelIndex index = ui->listbox_engines->selectionModel()->selectedIndexes()[0];
 
     if (arg1 == "Default")

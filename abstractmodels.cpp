@@ -304,9 +304,7 @@ void EngineListModel::setDoomExe()
     QString tempPath = QFileDialog::getOpenFileName(NULL, title, "", filter);
 
     if (tempPath == NULL)
-    {
         return;
-    }
 
     QFileInfo doomfile(tempPath);
 
