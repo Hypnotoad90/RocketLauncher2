@@ -871,6 +871,9 @@ External File</string>
         </item>
         <item row="0" column="2" alignment="Qt::AlignVCenter">
          <widget class="QGroupBox" name="groupBox_4">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="title">
            <string>Engine Properties</string>
           </property>
