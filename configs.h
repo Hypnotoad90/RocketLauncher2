@@ -41,6 +41,11 @@ public:
     QString demoName;
     bool noMonsters = false;
     bool noMusic = false;
+
+    // When true, RocketLauncher will attempt to pass a -savedirs argument
+    // to the engine specifying a custom save directory. Not all engines may
+    // support this.
+    bool useLocalSaves = false;
 };
 
 #endif // CONFIGS_H

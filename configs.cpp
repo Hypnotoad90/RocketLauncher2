@@ -58,6 +58,7 @@ void RocketLauncher2::initConfigs()
         rocket.demoName = ConfigSettings.value("demoName").toString();
         rocket.noMonsters = ConfigSettings.value("noMonsters").toBool();
         rocket.noMusic = ConfigSettings.value("noMusic").toBool();
+        rocket.useLocalSaves = ConfigSettings.value("useLocalSaves").toBool();
         foreach(QVariant v, ConfigSettings.value("filesChecked").toList()) {
           rocket.filesChecked << v.toBool();
         }
@@ -112,6 +113,7 @@ RocketFile RocketLauncher2::makeConfigFromCurrent(QString name)
     rocket.demoName = ui->input_record->text();
     rocket.noMonsters = ui->check_nomonsters->isChecked();
     rocket.noMusic = ui->check_nomusic->isChecked();
+    rocket.useLocalSaves = ui->check_enablelocalsaves->isChecked();
 
     for (int i = 0; i < pwadloadlist->rowCount(); i++)
     {
@@ -220,6 +222,7 @@ void RocketLauncher2::saveToExternal(RocketFile &rocket, QString name)
     rocketSetting.setValue("demoName",rocket.demoName);
     rocketSetting.setValue("noMonsters",rocket.noMonsters);
     rocketSetting.setValue("noMusic",rocket.noMusic);
+    rocketSetting.setValue("useLocalSaves",rocket.useLocalSaves);
     QVariantList filesCheckedVariant;
 
     foreach (auto v, rocket.filesChecked)
@@ -263,6 +266,7 @@ void RocketLauncher2::saveToGlobal(RocketFile &rocket)
     ConfigSettings.setValue("demoName",rocket.demoName);
     ConfigSettings.setValue("noMonsters",rocket.noMonsters);
     ConfigSettings.setValue("noMusic",rocket.noMusic);
+    ConfigSettings.setValue("useLocalSaves", rocket.useLocalSaves);
     QVariantList filesCheckedVariant;
 
     foreach (auto v, rocket.filesChecked)
@@ -289,6 +293,7 @@ void RocketLauncher2::saveToGlobalFromList(RocketFile *rocket, int index)
     ConfigSettings.setValue("demoName",rocket->demoName);
     ConfigSettings.setValue("noMonsters",rocket->noMonsters);
     ConfigSettings.setValue("noMusic",rocket->noMusic);
+    ConfigSettings.setValue("useLocalSaves", rocket->useLocalSaves);
 
     QVariantList filesCheckedVariant;
     foreach (auto v, rocket->filesChecked)
