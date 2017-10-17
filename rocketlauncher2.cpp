@@ -247,6 +247,7 @@ QStringList RocketLauncher2::genCommandline()
     }
 
     QStringList ret;
+    QStringList fileNames;
     QString iwadpath = returnSelectedDndViewItemData(ui->listbox_IWADs);
     bool filesadded = false;
     ret << "-IWAD";
@@ -258,6 +259,8 @@ QStringList RocketLauncher2::genCommandline()
     }
 
     ret << iwadpath;
+    QFileInfo iwadFileInfo(iwadpath);
+    fileNames << iwadFileInfo.fileName();
 
     if (reslist->rowCount() > 0)
     {
@@ -270,7 +273,10 @@ QStringList RocketLauncher2::genCommandline()
                     ret << "-file";
                     filesadded = true;
                 }
-                ret << reslist->item(i)->data(Qt::UserRole).toString();
+                QString resPath = reslist->item(i)->data(Qt::UserRole).toString();
+                ret << resPath;
+                QFileInfo resFileInfo(resPath);
+                fileNames << resFileInfo.fileName();
             }
         }
     }
@@ -321,6 +327,28 @@ QStringList RocketLauncher2::genCommandline()
     {
         ret << "-record";
         ret << ui->input_record->text();
+    }
+
+    if (ui->check_enablelocalsaves->isChecked())
+    {
+        QFileInfo configLocation(ConfigSettings.fileName());
+        QDir configPath(configLocation.absolutePath());
+        configPath.cd(configPath.dirName());
+        if (!configPath.exists("localsaves"))
+        {
+            configPath.mkdir("localsaves");
+        }
+        configPath.cd("localsaves");
+
+        QString saveDir = fileNames.join(QChar('+'));
+        if (!configPath.exists(saveDir))
+        {
+            configPath.mkdir(saveDir);
+        }
+        configPath.cd(saveDir);
+
+        ret << "-savedir";
+        ret << configPath.absolutePath();
     }
 
     if (ui->input_argbox->text() != "" && ui->input_argbox->text() != NULL)

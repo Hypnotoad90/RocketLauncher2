@@ -16,6 +16,12 @@ With Rocket Launcher 2.0, you can easily add files to the load list. You can dir
 
 If you're pleased with your particular combination of files to load, engine selection and launch options and wish to quickly recall this configuration for a later time, you can easily do so in the Load / Save Configs tab, where you can save the current configuration to your Favorites list, and with a click of a button, recall all your other saved configurations exactly as they were by selecting any item on the list and clicking "load selected". As before, you can also save configurations to external *.rocket files.
 
+#### Local saves
+
+![A screenshot demonstrating the separate directories made per engine launch](/RLPics/LocalSaves.png?raw=true "Local Saves")
+
+If you check 'Enable Local Saves' in the launcher, RocketLauncher will attempt to create a separate save directory for the specific set of files you have loaded. This ensures that saved games won't overwrite each other when switching between configurations.
+
 ### DOSBox support
 
 ![Alt text](/RLPics/DOSBox.png?raw=true "Drag, Drop & Launch")

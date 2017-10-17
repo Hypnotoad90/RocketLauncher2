@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>696</width>
+    <width>702</width>
     <height>501</height>
    </rect>
   </property>
@@ -382,6 +382,16 @@
                  </property>
                  <property name="text">
                   <string>Show Command Line</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="check_enablelocalsaves">
+                 <property name="toolTip">
+                  <string>When enabled, RocketLauncher will attempt to store saved games for the configuration in a separate directory. This is equivalent to passing the '-savedir' argument in GZDoom.</string>
+                 </property>
+                 <property name="text">
+                  <string>Enable Local Saves</string>
                  </property>
                 </widget>
                </item>
