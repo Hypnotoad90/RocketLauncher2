@@ -184,7 +184,7 @@ void RocketLauncher2::on_combo_EngPic_currentTextChanged(const QString &arg1)
         enginelist->setPicFromIndex(Pic_Edge, index);
     else if (arg1 == "Eternity")
         enginelist->setPicFromIndex(Pic_Eternity, index);
-    else if (arg1 == "GZDoom")
+    else if (arg1 == "GZdoom")
         enginelist->setPicFromIndex(Pic_GZdoom, index);
     else if (arg1 == "Legacy")
         enginelist->setPicFromIndex(Pic_Legacy, index);
