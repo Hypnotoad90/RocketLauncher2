@@ -43,6 +43,9 @@ public:
     explicit RocketLauncher2(QWidget *parent = 0, int argc = 0, char *argv[] = 0);
     ~RocketLauncher2();
 
+protected:
+     void closeEvent(QCloseEvent *event);
+
 private slots:
 
     void on_pushButton_3_clicked();
@@ -155,10 +158,13 @@ private:
     void loadExtConfig(QString path);
     void applyConfig(RocketFile *rocket);
     void initConfigs();
+    void autoLoadConfig();
     void saveToGlobal(RocketFile &rocket);
+    void saveToAutoLoad();
     void saveToGlobalFromList(RocketFile *rocket, int index);
     void saveToExternal(RocketFile &rocket, QString name);
     QSettings ConfigSettings;
+    QSettings AutoLoad;
 
     QString pwadFilter;
 };

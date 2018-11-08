@@ -36,6 +36,35 @@ void RocketLauncher2::on_button_loadConfigExt_clicked()
     }
 }
 
+void RocketLauncher2::autoLoadConfig(){
+    AutoLoad.beginReadArray("configs");
+    if (AutoLoad.contains("name"))
+    {
+        RocketFile *rocket = new RocketFile();
+        rocket->name = AutoLoad.value("name").toString();
+        rocket->engName = AutoLoad.value("engName").toString();
+        rocket->iwadName = AutoLoad.value("iwadName").toString();
+        rocket->resPaths = AutoLoad.value("resPaths").toStringList();
+        rocket->filePaths = AutoLoad.value("filePaths").toStringList();
+        rocket->map = AutoLoad.value("map").toString();
+        rocket->skill = AutoLoad.value("skill").toInt();
+        rocket->addCmd = AutoLoad.value("addCmd").toString();
+        rocket->demo = AutoLoad.value("demo").toBool();
+        rocket->demoName = AutoLoad.value("demoName").toString();
+        rocket->noMonsters = AutoLoad.value("noMonsters").toBool();
+        rocket->noMusic = AutoLoad.value("noMusic").toBool();
+
+        foreach( QVariant v, AutoLoad.value("filesChecked").toList())
+        {
+            rocket->filesChecked << v.toBool();
+        }
+
+        applyConfig(rocket);
+        delete rocket;
+    }
+}
+
+
 void RocketLauncher2::initConfigs()
 {
     conflist = new ConfigListModel();
@@ -194,7 +223,9 @@ void RocketLauncher2::applyConfig(RocketFile *rocket)
     ui->check_nomusic->setChecked(rocket->noMusic);
     ui->input_record->setText(rocket->demoName);
 
-    QMessageBox::information(this, "Success", QString("%1 configuration loaded.").arg(rocket->name));
+    //QMessageBox::information(this, "Success", QString("%1 configuration loaded.").arg(rocket->name));
+
+    ui->tabWidget_rlauncher->setCurrentIndex(0);
 }
 
 
@@ -243,6 +274,32 @@ void RocketLauncher2::on_button_saveConfigExt_clicked()
     RocketFile rocket = makeConfigFromCurrent(name);
     saveToExternal(rocket, name);
 
+}
+
+void RocketLauncher2::saveToAutoLoad()
+{
+    RocketFile rocket = RocketLauncher2::makeConfigFromCurrent("AutoLoad");
+    AutoLoad.setValue("name", rocket.name);
+    AutoLoad.setValue("engName",rocket.engName);
+    AutoLoad.setValue("iwadName",rocket.iwadName);
+    AutoLoad.setValue("resPaths",rocket.resPaths);
+    AutoLoad.setValue("filePaths",rocket.filePaths);
+    AutoLoad.setValue("map",rocket.map);
+    AutoLoad.setValue("skill",rocket.skill);
+    AutoLoad.setValue("addCmd",rocket.addCmd);
+    AutoLoad.setValue("demo",rocket.demo);
+    AutoLoad.setValue("demoName",rocket.demoName);
+    AutoLoad.setValue("noMonsters",rocket.noMonsters);
+    AutoLoad.setValue("noMusic",rocket.noMusic);
+    QVariantList filesCheckedVariant;
+
+    foreach (auto v, rocket.filesChecked)
+    {
+        filesCheckedVariant << v;
+    }
+
+    AutoLoad.setValue("filesChecked", filesCheckedVariant);
+    AutoLoad.endArray();
 }
 
 void RocketLauncher2::saveToGlobal(RocketFile &rocket)

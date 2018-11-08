@@ -43,7 +43,8 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
     QMainWindow(parent),
     ui(new Ui::RocketLauncher2),
     settings(QSettings::IniFormat,QSettings::UserScope,"RocketLauncher2","settings"),
-    ConfigSettings(QSettings::IniFormat,QSettings::UserScope,"RocketLauncher2","SavedConfigs")
+    ConfigSettings(QSettings::IniFormat,QSettings::UserScope,"RocketLauncher2","SavedConfigs"),
+    AutoLoad(QSettings::IniFormat,QSettings::UserScope,"RocketLauncher2","AutoLoad")
 {
     //settings = QSettings(QSettings::IniFormat,QSettings::UserScope,"RocketLauncher2","settings");
     qDebug() << settings.fileName();
@@ -70,6 +71,7 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
     initConfigs();
     loadsettings();
     enginelist->LoadEngineData();
+    autoLoadConfig();
 
     if (enginelist->DoomExePath != "" && enginelist->DoomExePath != NULL)
         ui->input_idExePath->setText(enginelist->DoomExePath);
@@ -88,6 +90,14 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
             ";;zip Files (*.zip)"
             ";;Any files (*)");
 }
+
+void RocketLauncher2::closeEvent(QCloseEvent* event){
+    //Rocket AutoRocket
+    RocketLauncher2::saveToAutoLoad();
+    settings.setValue("size", size());
+    QMainWindow::closeEvent(event);
+}
+
 
 RocketLauncher2::~RocketLauncher2()
 {
@@ -201,6 +211,13 @@ void RocketLauncher2::loadsettings()
         QModelIndex index = iwadlist->index( settings.value("lastIwadIndex").toInt(), 0);
         ui->listbox_IWADs->setCurrentIndex(index);
     }
+
+    if (settings.contains("size"))
+        {
+            QSize size = settings.value("size", QSize(400, 400)).toSize();
+            this->resize(size);
+        }
+
 }
 
 void RocketLauncher2::parseCmdLine(int argc, char *argv[])
