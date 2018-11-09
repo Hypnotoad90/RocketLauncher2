@@ -70,8 +70,6 @@ private slots:
 
     void addToIWADs(const QString filepath);
 
-    void addToRes(const QString filepath);
-
     //void deleteFromFavorites(const int index);
 
     void on_button_favadd_clicked();
@@ -84,15 +82,9 @@ private slots:
 
     void copyItemToIwads(QDropEvent* pEvent);
 
-    void copyItemToRes(QDropEvent* pEvent);
-
     void on_button_addiwad_clicked();
 
     void on_button_deliwad_clicked();
-
-    void on_button_addres_clicked();
-
-    void on_button_delres_clicked();
 
     void on_listbox_IWADs_clicked(const QModelIndex &index);
 
@@ -138,7 +130,6 @@ private:
     EngineListModel *enginelist;
     QStandardItemModel *pwadloadlist;
     QStandardItemModel *favlist;
-    QStandardItemModel *reslist;
     ConfigListModel *conflist;
     QStringList genCommandline();
     QProcess *process;
@@ -149,7 +140,6 @@ private:
     void parseCmdLine(int argc, char *argv[]);
     void updateFavs(QString filepath, bool save);
     void updateIWADs(QString filepath, bool save);
-    void updateres(QString filepath, bool save);
     void initListViews();
     QStringList genDOSBoxcmd();
 

@@ -65,8 +65,6 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
     connect(ui->listbox_pwadload, SIGNAL(internalItemDropped(QDropEvent*)), this, SLOT(copyItemToPwads(QDropEvent*)));
     connect(ui->listbox_IWADs, SIGNAL(internalItemDropped(QDropEvent*)), this, SLOT(copyItemToIwads(QDropEvent*)));
     connect(ui->listbox_IWADs, SIGNAL(fileSystemPathDropped(QString)), this, SLOT(addToIWADs(const QString)));
-    connect(ui->listbox_res, SIGNAL(fileSystemPathDropped(QString)), this, SLOT(addToRes(const QString)));
-    connect(ui->listbox_res, SIGNAL(internalItemDropped(QDropEvent*)), this, SLOT(copyItemToRes(QDropEvent*)));
     initPixmaps();
     initConfigs();
     loadsettings();
@@ -152,13 +150,6 @@ void RocketLauncher2::initListViews()
     ui->listbox_IWADs->setDropIndicatorShown(true);
     ui->listbox_IWADs->setDragDropMode(QAbstractItemView::InternalMove);
     ui->listbox_IWADs->setDefaultDropAction(Qt::MoveAction);
-
-    reslist = new QStandardItemModel;
-    ui->listbox_res->setModel(reslist);
-    ui->listbox_res->setAcceptDrops(true);
-    ui->listbox_res->setDropIndicatorShown(true);
-    ui->listbox_res->setDragDropMode(QAbstractItemView::InternalMove);
-    ui->listbox_res->setDefaultDropAction(Qt::MoveAction);
 }
 
 //==========LOAD==========
@@ -189,18 +180,6 @@ void RocketLauncher2::loadsettings()
         {
             settings.setArrayIndex(i);
             updateIWADs(settings.value("iwad_path").toString(), false);
-        }
-    }
-
-    settings.endArray();
-    fsize = settings.beginReadArray("resfiles");
-
-    if (fsize > 0)
-    {
-        for (int i = 0; i < fsize; i++)
-        {
-            settings.setArrayIndex(i);
-            updateres(settings.value("resfile_path").toString(), false);
         }
     }
 
@@ -275,22 +254,6 @@ QStringList RocketLauncher2::genCommandline()
     }
 
     ret << iwadpath;
-
-    if (reslist->rowCount() > 0)
-    {
-        for (int i = 0; i < reslist->rowCount(); i++)
-        {
-            if (reslist->item(i)->checkState() == Qt::Checked)
-            {
-                if (!filesadded)
-                {
-                    ret << "-file";
-                    filesadded = true;
-                }
-                ret << reslist->item(i)->data(Qt::UserRole).toString();
-            }
-        }
-    }
 
     if (pwadloadlist->rowCount() > 0)
     {
@@ -369,22 +332,6 @@ QStringList RocketLauncher2::genDOSBoxcmd()
     ret << "-c";
     ret << "aspect = true";
     bool filesadded = false;
-
-    if (reslist->rowCount() > 0)
-    {
-        for (int i = 0; i < reslist->rowCount(); i++)
-        {
-            if (reslist->item(i)->checkState() == Qt::Checked)
-            {
-                if (!filesadded)
-                {
-                    dosTemp << "-file";
-                    filesadded = true;
-                }
-                dosTemp << reslist->item(i)->data(Qt::UserRole).toString();
-            }
-        }
-    }
 
     if (pwadloadlist->rowCount() > 0)
     {
@@ -665,40 +612,6 @@ void RocketLauncher2::copyItemToIwads(QDropEvent* pEvent)
 void RocketLauncher2::addToIWADs(const QString filepath)
 {
     updateIWADs(filepath, true);
-}
-
-void RocketLauncher2::on_button_addres_clicked()
-{
-    QString title = tr("Locate a common resource file to add to the list.");
-    updateres(QFileDialog::getOpenFileName(this,title,"",pwadFilter), true);
-}
-
-void RocketLauncher2::updateres(QString filepath, bool save)
-{
-    bool noMatch = updateDndListView(filepath, reslist, true, false);
-
-    if (save)
-    {
-        if (noMatch)
-            saveListviewPath("resfiles", "resfile_path", filepath, settings);
-    }
-}
-
-void RocketLauncher2::on_button_delres_clicked()
-{
-    removeSelectedFromDnDListViewSave(ui->listbox_res, reslist, "resfiles", "resfile_path", settings);
-}
-
-void RocketLauncher2::addToRes(const QString filepath)
-{
-    updateres(filepath, true);
-}
-
-void RocketLauncher2::copyItemToRes(QDropEvent* pEvent)
-{
-    this->setUpdatesEnabled(false);
-    copyItemToDndListViewSave(qobject_cast<DndFileSystemListView *>(pEvent->source()), reslist, true, "resfiles", "resfile_path", settings);
-    this->setUpdatesEnabled(true);
 }
 
 void RocketLauncher2::on_listbox_IWADs_clicked(const QModelIndex &index)
