@@ -56,7 +56,7 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
 
     initListViews();
 
-
+    connect(ui->listbox_configFavs, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_button_loadFavConfig_clicked()));
     connect(ui->listbox_pwadload, SIGNAL(fileSystemPathDropped(QString)), this, SLOT(addpwad(QString)));
     connect(enginelist, SIGNAL(updateCombo(const QString)), this, SLOT(setEngineSelection(const QString)));
     connect(enginelist, SIGNAL(updateComboIndex(int)), this, SLOT(setEngineSelectionIndex(int)));
