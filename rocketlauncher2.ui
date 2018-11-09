@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Rocket Launcher</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/engine/img/rocket.ico</normaloff>:/engine/img/rocket.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_5">
     <item row="0" column="0">
@@ -1010,6 +1014,8 @@ External File</string>
    <header>dndfilesystemlistview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
