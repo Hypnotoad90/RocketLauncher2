@@ -176,13 +176,17 @@ void RocketLauncher2::applyConfig(RocketFile *rocket)
 
     if (rocket->filePaths.count() == rocket->filesChecked.count())
     {
+        int listi = 0;
         for (int i = 0; i < rocket->filePaths.count(); i++)
         {
-            addpwad(rocket->filePaths.at(i));
-            if (rocket->filesChecked.at(i).toBool() == true)
-                pwadloadlist->item(i)->setCheckState(Qt::Checked);
-            else
-                pwadloadlist->item(i)->setCheckState(Qt::Unchecked);
+            if (addpwad(rocket->filePaths.at(i)) == true){
+                if (rocket->filesChecked.at(i).toBool() == true)
+                    pwadloadlist->item(listi)->setCheckState(Qt::Checked);
+                else
+                    pwadloadlist->item(listi)->setCheckState(Qt::Unchecked);
+                listi++;
+            }
+
         }
     }
 

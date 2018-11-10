@@ -54,7 +54,7 @@ private slots:
 
     void on_combo_Engines_currentIndexChanged(int index);
 
-    void addpwad(QString filepath);
+    bool addpwad(QString filepath);
 
     void on_button_add_clicked();
 

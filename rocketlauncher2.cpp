@@ -496,9 +496,9 @@ void RocketLauncher2::setEngineSelectionIndex(int index)
 
 //==========WAD LISTVIEW HANDLING==========
 
-void RocketLauncher2::addpwad(QString filepath)
+bool RocketLauncher2::addpwad(QString filepath)
 {
-    updateDndListView(filepath, pwadloadlist, true);
+    return updateDndListView(filepath, pwadloadlist, true);
 }
 
 void RocketLauncher2::addToFavorites(const QString filepath)
