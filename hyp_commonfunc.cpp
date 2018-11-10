@@ -159,7 +159,7 @@ QString returnSelectedDndViewItemData(DndFileSystemListView *listview, int role)
 
 QModelIndex getIndexOfDisplayText(QAbstractItemModel *model, QString text)
 {
-    QModelIndexList indexes = model->match(model->index(0,0), Qt::DisplayRole,QVariant::fromValue(text));
+    QModelIndexList indexes = model->match(model->index(0,0), Qt::DisplayRole,QVariant::fromValue(text),1,Qt::MatchExactly);
 
     if (indexes.count()> 0)
         return indexes.at(0);
