@@ -51,8 +51,9 @@ void RocketLauncher2::on_button_removeEng_clicked()
     //enginelist->EngineSettings.remove("");
     enginelist->EngineSettings.endArray();
     enginelist->SaveEngineData();
-    enginelist->setCurrentEngine(0);
-    enginelist->updateComboIndex(0);
+    //enginelist->setCurrentEngine(0);
+    //enginelist->updateComboIndex(0);
+    enginelist->EngineSet = false;
 }
 
 
