@@ -242,7 +242,9 @@ void EngineListModel::LoadEngineData()
 
 void EngineListModel::SaveEngineData()
 {
+
     EngineSettings.beginWriteArray("Engines");
+    EngineSettings.clear();
     for (int i = 0; i < Engines_.count(); i++)
     {
         EngineSettings.setArrayIndex(i);

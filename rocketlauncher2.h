@@ -92,6 +92,8 @@ private slots:
 
     void on_button_loadConfigExt_clicked();
 
+    void on_button_createFavExt_clicked();
+
     void on_button_addConfToFav_clicked();
 
     void on_button_loadFavConfig_clicked();

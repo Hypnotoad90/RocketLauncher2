@@ -26,10 +26,22 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QFileDialog>
+#include <QStandardPaths>
 
 void RocketLauncher2::on_button_loadConfigExt_clicked()
 {
-    QString settingsDir = QFileDialog::getOpenFileName(this,"Load a configuration file.", QString(),"Rocket Files (*.rocket)");
+    QString configsLocation = QStandardPaths::locate(QStandardPaths::AppConfigLocation, QString(), QStandardPaths::LocateDirectory);
+    QString settingsDir = QFileDialog::getOpenFileName(this,"Load a configuration file.", configsLocation,"Rocket Files (*.rocket)");
+    if (settingsDir != NULL)
+    {
+        loadExtConfig(settingsDir);
+    }
+}
+
+void RocketLauncher2::on_button_createFavExt_clicked()
+{
+    QString configsLocation = QStandardPaths::locate(QStandardPaths::AppConfigLocation, QString(), QStandardPaths::LocateDirectory);
+    QString settingsDir = QFileDialog::getOpenFileName(this,"Load a configuration file.", configsLocation,"Rocket Files (*.rocket)");
     if (settingsDir != NULL)
     {
         loadExtConfig(settingsDir);
@@ -158,7 +170,7 @@ void RocketLauncher2::applyConfig(RocketFile *rocket)
     }
     else
     {
-        QMessageBox::information(this, "Engine not found!", QString("Warning, %1 engine could not be found.").arg(rocket->engName));
+        //QMessageBox::information(this, "Engine not found!", QString("Warning, %1 engine could not be found.").arg(rocket->engName));
     }
 
     QModelIndexList indexes = iwadlist->match(iwadlist->index(0,0),Qt::DisplayRole,QVariant::fromValue(rocket->iwadName));

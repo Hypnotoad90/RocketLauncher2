@@ -37,7 +37,7 @@
        <string/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_launchwad">
        <attribute name="title">
@@ -662,20 +662,6 @@
              <string>Save</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_7">
-             <item row="2" column="1" alignment="Qt::AlignHCenter">
-              <widget class="QPushButton" name="button_saveConfigExt">
-               <property name="minimumSize">
-                <size>
-                 <width>100</width>
-                 <height>50</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>Save To
-External File</string>
-               </property>
-              </widget>
-             </item>
              <item row="2" column="0" alignment="Qt::AlignHCenter">
               <widget class="QPushButton" name="button_addConfToFav">
                <property name="sizePolicy">
@@ -711,6 +697,20 @@ Favorites </string>
              </item>
              <item row="1" column="0" colspan="2" alignment="Qt::AlignTop">
               <widget class="QLineEdit" name="input_confName"/>
+             </item>
+             <item row="2" column="1">
+              <widget class="QPushButton" name="button_saveConfigExt">
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Save To
+External File</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
