@@ -38,16 +38,6 @@ void RocketLauncher2::on_button_loadConfigExt_clicked()
     }
 }
 
-void RocketLauncher2::on_button_createFavExt_clicked()
-{
-    QString configsLocation = QStandardPaths::locate(QStandardPaths::AppConfigLocation, QString(), QStandardPaths::LocateDirectory);
-    QString settingsDir = QFileDialog::getOpenFileName(this,"Load a configuration file.", configsLocation,"Rocket Files (*.rocket)");
-    if (settingsDir != NULL)
-    {
-        loadExtConfig(settingsDir);
-    }
-}
-
 void RocketLauncher2::autoLoadConfig(){
     AutoLoad.beginReadArray("configs");
     if (AutoLoad.contains("name"))

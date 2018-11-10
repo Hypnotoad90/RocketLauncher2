@@ -348,11 +348,11 @@ void EngineListModel::addDefaultEngine(QString path)
         QMessageBox::information(NULL,"Error",QString("Failed to add executable."));
         return;
     }
-
-    EngineInfo newengine = {path, "Custom engine", Engine_Default, Pic_Default};
+    QString fileName(tempfile.fileName());
+    EngineInfo newengine = {path, fileName, Engine_Default, Pic_Default};
     Engines_ << newengine;
     QMessageBox::information(NULL,"Executable Added",QString("Custom engine added!"));
-    emit updateCombo("Custom engine");
+    emit updateCombo(fileName);
     emit dataChanged(QModelIndex(),QModelIndex());
     SaveEngineData();
 }
