@@ -38,7 +38,7 @@ This allows for this project to be cross platform, including support for Linux a
 
 #### Windows
 
-Download executable here: https://github.com/Hypnotoad90/RocketLauncher2/releases/download/0.1.0.1/RocketLauncher2_v0101.zip
+Needs compiling.
 
 #### Linux
 
