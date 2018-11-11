@@ -80,16 +80,16 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
     parseCmdLine(argc,argv);
     //ui->listbox_pwadload->setDragDropOverwriteMode(false);
 
-    pwadFilter = tr("WAD/PK3/ZIP/PK7/PKZ/P7Z "
-            "(*.wad *.pk3 *.zip *.pk7 *.pkz)"
-            ";;WAD Files (*.wad)"
-            ";;PK3 Files (*.pk3)"
-            ";;Patch Files (*.bex *.deh)"
-            ";;PK7 Files (*.pk7)"
-            ";;PKZ Files (*.pkz)"
-            ";;P7Z Files (*.p7z)"
-            ";;zip Files (*.zip)"
-            ";;Any files (*)");
+    pwadFilter = tr("Any files (*)"
+            ";;WAD/PK3/ZIP/PK7/PKZ/P7Z "
+            "(*.wad *.pk3 *.zip *.pk7 *.pkz *.WAD *.PK3 *.ZIP *.PK7 *.PKZ *.P7Z)"
+            ";;WAD Files (*.wad *.WAD)"
+            ";;PK3 Files (*.pk3 *.PK3)"
+            ";;Patch Files (*.bex *.deh *.BEX *.DEH)"
+            ";;PK7 Files (*.pk7 *.PK7)"
+            ";;PKZ Files (*.pkz *.PKZ)"
+            ";;P7Z Files (*.p7z *.P7Z)"
+            ";;zip Files (*.zip *.ZIP)");
 }
 
 void RocketLauncher2::closeEvent(QCloseEvent* event){
