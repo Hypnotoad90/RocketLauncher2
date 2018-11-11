@@ -118,6 +118,8 @@ private slots:
 
     void on_button_idExeBrowse_clicked();
 
+    void showCommandLine();
+
 private:
     Ui::RocketLauncher2 *ui;
     QString m_settingsfile;
@@ -137,10 +139,15 @@ private:
     void initPixmaps();
     QList<QPixmap> *enginepics;
     QSettings settings;
+    QMenu *RLMenu;
+    QAction *rlmCmdLne;
+    QAction *rlmLoadRocket;
+    QAction *rlmSaveRocket;
     void parseCmdLine(int argc, char *argv[]);
     void updateFavs(QString filepath, bool save);
     void updateIWADs(QString filepath, bool save);
     void initListViews();
+    void setupAdditionalUi();
     QStringList genDOSBoxcmd();
 
     //configs

@@ -223,7 +223,9 @@ void RocketLauncher2::on_button_loadFavConfig_clicked()
 
 void RocketLauncher2::saveToExternal(RocketFile &rocket, QString name)
 {
-    QString settingsDir = QFileDialog::getSaveFileName(this,"Choose where you wish to save the configuration.", m_mainAppPath.filePath(name + ".rocket"),"Rocket Files (*.rocket)");
+    QString configsLocation = QStandardPaths::locate(QStandardPaths::AppConfigLocation, QString(), QStandardPaths::LocateDirectory);
+    QString rocketDirPath = configsLocation+name+".rocket";
+    QString settingsDir = QFileDialog::getSaveFileName(this,"Choose where you wish to save the configuration.", rocketDirPath,"Rocket Files (*.rocket)");
     QSettings rocketSetting(settingsDir,QSettings::IniFormat);
     rocketSetting.setValue("name", rocket.name);
     rocketSetting.setValue("engName",rocket.engName);
@@ -252,8 +254,9 @@ void RocketLauncher2::on_button_saveConfigExt_clicked()
 
     if (!inputExists(name))
     {
-        QMessageBox::information(this,"Input Name", "Please input a name for this config to be saved");
-        return;
+        //QMessageBox::information(this,"Input Name", "Please input a name for this config to be saved");
+        //return;
+        name = "My Rocket";
     }
 
     RocketFile rocket = makeConfigFromCurrent(name);

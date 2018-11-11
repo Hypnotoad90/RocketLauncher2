@@ -31,6 +31,7 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QMimeData>
+#include <QMenu>
 
 #include "dndfilesystemlistview.h"
 #include "rocketlauncher2.h"
@@ -53,6 +54,7 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
     m_settingsfile = m_mainAppPath.filePath("settings.ini");
     m_wadextfilters << "*.wad" << "*.pk3" << ".pk7";
     ui->setupUi(this);
+    setupAdditionalUi();
 
     initListViews();
 
@@ -121,6 +123,24 @@ void RocketLauncher2::initPixmaps()
     enginepics->append((QPixmap(":/engine/img/vavoom2.png").scaled(105,105,Qt::KeepAspectRatio))); //12 Vavoom
     enginepics->append((QPixmap(":/engine/img/ddlogo.png").scaled(105,105,Qt::KeepAspectRatio))); //13 DoomsDay
     ui->img_engine->setPixmap(enginepics->at(0));
+}
+
+void RocketLauncher2::setupAdditionalUi(){
+    RLMenu = new QMenu(this);
+    rlmCmdLne = new QAction("Show Command Line",this);
+    rlmLoadRocket = new QAction("Load .rocket",this);
+    rlmSaveRocket = new QAction("Save .rocket",this);
+    rlmCmdLne->setObjectName("Show Command Line");
+    rlmLoadRocket->setObjectName("Load .rocket");
+    rlmSaveRocket->setObjectName("Save .rocket");
+    RLMenu->addAction(rlmCmdLne);
+    RLMenu->addAction(rlmLoadRocket);
+    RLMenu->addAction(rlmSaveRocket);
+    ui->button_rocketmenu->setMenu(RLMenu);
+    connect(rlmCmdLne,SIGNAL(triggered()),this,SLOT(showCommandLine()));
+    connect(rlmLoadRocket,SIGNAL(triggered()),this,SLOT(on_button_loadConfigExt_clicked()));
+    connect(rlmSaveRocket,SIGNAL(triggered()),this,SLOT(on_button_saveConfigExt_clicked()));
+    adjustSize();
 }
 
 void RocketLauncher2::initListViews()
@@ -232,6 +252,25 @@ void RocketLauncher2::parseCmdLine(int argc, char *argv[])
             }
         }
     }
+}
+
+void RocketLauncher2::showCommandLine(){
+    QStringList cmd = genCommandline();
+
+    if (cmd[1] == "fail_IWADSELECT")
+    {
+        QMessageBox::information(this,"Error" ,"Please select your IWAD");
+        return;
+    }
+    else if (cmd[0] == "fail_DOOMEXE")
+    {
+        QMessageBox::information(this,"Error" , "Could not find original Doom Executable for DOSBox");
+        return;
+    }
+
+    QString showargs;
+    showargs = cmd.join("\n");
+    QMessageBox::information(this,"Command Line" ,showargs);
 }
 
 //==========LAUNCH ENGINE==========
@@ -403,13 +442,6 @@ void RocketLauncher2::on_pushButton_3_clicked() //RUN
     {
         QMessageBox::information(this,"Error" , "Could not find original Doom Executable for DOSBox");
         return;
-    }
-
-    if (ui->check_showcmdline->isChecked())
-    {
-        QString showargs;
-        showargs = cmd.join("\n");
-        QMessageBox::information(this,"Command Line" ,showargs);
     }
 
     QFileInfo engineDir(enginefile);
