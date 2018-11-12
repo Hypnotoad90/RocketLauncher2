@@ -30,6 +30,7 @@
 #include <QPixmap>
 #include <QSettings>
 #include "configs.h"
+#include "commandlinedialog.h"
 
 namespace Ui {
 class RocketLauncher2;
@@ -133,7 +134,8 @@ private:
     QStandardItemModel *pwadloadlist;
     QStandardItemModel *favlist;
     ConfigListModel *conflist;
-    QStringList genCommandline();
+    CommandLineDialog *cmdDialog;
+    QStringList genCommandline(bool displayOnly);
     QProcess *process;
     void SetEnginePic(EnginePic pic);
     void initPixmaps();

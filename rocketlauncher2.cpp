@@ -37,6 +37,7 @@
 #include "rocketlauncher2.h"
 #include "ui_rocketlauncher2.h"
 #include "hyp_commonfunc.h"
+#include "commandlinedialog.h"
 
 //==========Initialization==========
 
@@ -255,7 +256,15 @@ void RocketLauncher2::parseCmdLine(int argc, char *argv[])
 }
 
 void RocketLauncher2::showCommandLine(){
-    QStringList cmd = genCommandline();
+    QString enginefile;
+    if (!enginelist->EngineSet)
+    {
+        QMessageBox::information(this,"Error" ,"Please select or add an engine (source port).");
+        return;
+    }
+
+    enginefile = enginelist->getCurrentEngine()->path;
+    QStringList cmd = genCommandline(true);
 
     if (cmd[1] == "fail_IWADSELECT")
     {
@@ -269,13 +278,17 @@ void RocketLauncher2::showCommandLine(){
     }
 
     QString showargs;
-    showargs = cmd.join("\n");
-    QMessageBox::information(this,"Command Line" ,showargs);
+    showargs = enginefile+" "+cmd.join(' ');
+    CommandLineDialog *cmdDialog = new CommandLineDialog();
+    cmdDialog->setWindowTitle("Command Line");
+    cmdDialog->setTextBox(showargs);
+    cmdDialog->show();
+
 }
 
 //==========LAUNCH ENGINE==========
 
-QStringList RocketLauncher2::genCommandline()
+QStringList RocketLauncher2::genCommandline(bool displayOnly=false)
 {
     if (enginelist->getCurrentEngine()->type == Engine_DosBox)
     {
@@ -292,8 +305,11 @@ QStringList RocketLauncher2::genCommandline()
         ret << "fail_IWADSELECT";
         return ret;
     }
-
-    ret << iwadpath;
+    if (displayOnly == true){
+       ret << '"'+iwadpath+'"';
+    } else {
+       ret << iwadpath;
+    }
 
     if (pwadloadlist->rowCount() > 0)
     {
@@ -306,7 +322,11 @@ QStringList RocketLauncher2::genCommandline()
                     ret << "-file";
                     filesadded = true;
                 }
-                ret << pwadloadlist->item(i)->data(Qt::UserRole).toString();
+                if (displayOnly == true){
+                    ret << '"'+pwadloadlist->item(i)->data(Qt::UserRole).toString()+'"';
+                } else {
+                  ret << pwadloadlist->item(i)->data(Qt::UserRole).toString();
+                }
             }
         }
     }
@@ -451,6 +471,7 @@ void RocketLauncher2::on_pushButton_3_clicked() //RUN
 
     try
     {
+        qDebug() << cmd;
         process->start(enginefile,cmd);
     }
     catch(QException &e)
