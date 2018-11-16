@@ -95,6 +95,7 @@ bool updateDndListView(QString filepath, QStandardItemModel *model, bool checkab
 
     item->setData(file.fileName(),Qt::DisplayRole);
     item->setData(file.absoluteFilePath(),Qt::UserRole);
+    item->setToolTip(file.absoluteFilePath());
     item->setDragEnabled(true);
     item->setDropEnabled(false);
 
