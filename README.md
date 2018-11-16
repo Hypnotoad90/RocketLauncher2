@@ -36,7 +36,7 @@ This allows for this project to be cross platform, including support for Linux a
 
 ### Installation
 
-#### Windows 
+#### Windows (7 or later)
 
 Download executable here: https://github.com/paynworth/RocketLauncher2/releases/download/1.0-32/RocketLauncherPW32_v1.zip
 
