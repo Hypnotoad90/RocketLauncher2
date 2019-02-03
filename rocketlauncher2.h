@@ -29,6 +29,7 @@
 #include <QList>
 #include <QPixmap>
 #include <QSettings>
+#include <QShortcut>
 #include "configs.h"
 #include "commandlinedialog.h"
 
@@ -142,6 +143,8 @@ private:
     QList<QPixmap> *enginepics;
     QSettings settings;
     QMenu *RLMenu;
+    QShortcut *RLOpenShortcut;
+    QShortcut *RLSaveShortcut;
     QAction *rlmCmdLne;
     QAction *rlmLoadRocket;
     QAction *rlmSaveRocket;

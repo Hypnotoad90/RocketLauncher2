@@ -32,6 +32,7 @@
 #include <QDropEvent>
 #include <QMimeData>
 #include <QMenu>
+#include <QShortcut>
 
 #include "dndfilesystemlistview.h"
 #include "rocketlauncher2.h"
@@ -129,8 +130,8 @@ void RocketLauncher2::initPixmaps()
 void RocketLauncher2::setupAdditionalUi(){
     RLMenu = new QMenu(this);
     rlmCmdLne = new QAction("Show Command Line",this);
-    rlmLoadRocket = new QAction("Load .rocket",this);
-    rlmSaveRocket = new QAction("Save .rocket",this);
+    rlmLoadRocket = new QAction("Load .rocket (Ctrl+O)",this);
+    rlmSaveRocket = new QAction("Save .rocket (Ctrl+S)",this);
     rlmCmdLne->setObjectName("Show Command Line");
     rlmLoadRocket->setObjectName("Load .rocket");
     rlmSaveRocket->setObjectName("Save .rocket");
@@ -142,6 +143,11 @@ void RocketLauncher2::setupAdditionalUi(){
     connect(rlmLoadRocket,SIGNAL(triggered()),this,SLOT(on_button_loadConfigExt_clicked()));
     connect(rlmSaveRocket,SIGNAL(triggered()),this,SLOT(on_button_saveConfigExt_clicked()));
     adjustSize();
+
+    RLOpenShortcut = new QShortcut(QKeySequence(tr("Ctrl+O", "File|Open")), this);
+    connect(RLOpenShortcut,SIGNAL(activated()),this,SLOT(on_button_loadConfigExt_clicked()));
+    RLSaveShortcut = new QShortcut(QKeySequence(tr("Ctrl+S", "File|Save")), this);
+    connect(RLSaveShortcut,SIGNAL(activated()),this,SLOT(on_button_saveConfigExt_clicked()));
 }
 
 void RocketLauncher2::initListViews()
