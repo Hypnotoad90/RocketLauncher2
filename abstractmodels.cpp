@@ -216,6 +216,10 @@ int EngineListModel::SearchEngines(const QString name)
     return -1;
 }
 
+bool EngineListModel::isEmpty(){
+    return Engines_.isEmpty();
+}
+
 void EngineListModel::LoadEngineData()
 {
     int size = EngineSettings.beginReadArray("Engines");
@@ -338,6 +342,24 @@ void EngineListModel::removeRow(int row, const QModelIndex &parent)
 {
     Engines_.removeAt(row);
     QAbstractListModel::removeRow(row, parent);
+}
+
+void EngineListModel::moveRowDown(int row, const QModelIndex &parent)
+{
+       if  (!Engines_.isEmpty() && (row < Engines_.size()-1)){
+           Engines_.move(row, row+1);
+           QModelIndex sibling = parent.sibling(row+1, parent.column());
+           QAbstractListModel::moveRow(parent, row, sibling, row+1);
+       }
+}
+
+void EngineListModel::moveRowUp(int row, const QModelIndex &parent)
+{
+    if  (!Engines_.isEmpty() && (row > 0)){
+        Engines_.move(row, row-1);
+        QModelIndex sibling = parent.sibling(row-1, parent.column());
+        QAbstractListModel::moveRow(parent, row, sibling, row-1);
+    }
 }
 
 void EngineListModel::addDefaultEngine(QString path)

@@ -48,14 +48,72 @@ void RocketLauncher2::on_button_removeEng_clicked()
     ui->listbox_engines->setUpdatesEnabled(true);
     ui->combo_Engines->setUpdatesEnabled(true);
     enginelist->EngineSettings.beginWriteArray("Engines");
-    //enginelist->EngineSettings.remove("");
     enginelist->EngineSettings.endArray();
     enginelist->SaveEngineData();
-    //enginelist->setCurrentEngine(0);
-    //enginelist->updateComboIndex(0);
-    enginelist->EngineSet = false;
+    if (!enginelist->isEmpty()){
+        enginelist->setCurrentEngine(0);
+        enginelist->updateComboIndex(0);
+        enginelist->EngineSet = true;
+    } else {enginelist->EngineSet = false;}
 }
 
+void RocketLauncher2::on_button_moveEngineUp_clicked()
+{
+    if (!ui->listbox_engines->currentIndex().isValid()){return;}
+
+    ui->listbox_engines->setUpdatesEnabled(false);
+    ui->combo_Engines->setUpdatesEnabled(false);
+    QModelIndexList indexes = ui->listbox_engines->selectionModel()->selectedIndexes();
+    qSort(indexes.begin(), indexes.end());
+    QModelIndex currentIndex;
+    for (int i = indexes.count() - 1; i > -1; --i)
+    {
+        currentIndex = indexes.at(i);
+        enginelist->moveRowUp(currentIndex.row());
+
+    }
+    ui->listbox_engines->setUpdatesEnabled(true);
+    ui->combo_Engines->setUpdatesEnabled(true);
+    enginelist->EngineSettings.beginWriteArray("Engines");
+    enginelist->EngineSettings.endArray();
+    enginelist->SaveEngineData();
+    if (!enginelist->isEmpty()){
+        enginelist->setCurrentEngine(0);
+        enginelist->updateComboIndex(0);
+        enginelist->EngineSet = true;
+    } else {enginelist->EngineSet = false;}
+    ui->listbox_engines->setCurrentIndex(ui->listbox_engines->model()->index(currentIndex.row()-1,0));
+}
+
+void RocketLauncher2::on_button_moveEngineDown_clicked()
+{
+    if (!ui->listbox_engines->currentIndex().isValid()){return;}
+
+    ui->listbox_engines->setUpdatesEnabled(false);
+    ui->combo_Engines->setUpdatesEnabled(false);
+    QModelIndexList indexes = ui->listbox_engines->selectionModel()->selectedIndexes();
+    qSort(indexes.begin(), indexes.end());
+    QModelIndex currentIndex;
+    for (int i = indexes.count() - 1; i > -1; --i)
+    {
+        currentIndex = indexes.at(i);
+        enginelist->moveRowDown(currentIndex.row());
+
+    }
+    ui->listbox_engines->setUpdatesEnabled(true);
+    ui->combo_Engines->setUpdatesEnabled(true);
+    enginelist->EngineSettings.beginWriteArray("Engines");
+    enginelist->EngineSettings.endArray();
+    enginelist->SaveEngineData();
+    if (!enginelist->isEmpty()){
+        enginelist->setCurrentEngine(0);
+        enginelist->updateComboIndex(0);
+        enginelist->EngineSet = true;
+    } else {enginelist->EngineSet = false;}
+
+    ui->listbox_engines->setCurrentIndex(ui->listbox_engines->model()->index(currentIndex.row()+1,0));
+
+}
 
 void RocketLauncher2::on_listbox_engines_clicked(const QModelIndex &index)
 {

@@ -854,7 +854,7 @@ External File</string>
         <property name="verticalSpacing">
          <number>0</number>
         </property>
-        <item row="0" column="0" rowspan="2">
+        <item row="0" column="0" rowspan="3">
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
            <widget class="QLabel" name="label_engList">
@@ -864,7 +864,90 @@ External File</string>
            </widget>
           </item>
           <item>
-           <widget class="QListView" name="listbox_engines"/>
+           <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <item>
+             <widget class="QListView" name="listbox_engines"/>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_9">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <property name="sizeConstraint">
+               <enum>QLayout::SetDefaultConstraint</enum>
+              </property>
+              <item>
+               <widget class="QPushButton" name="button_moveEngineUp">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>30</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>▲</string>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>0</width>
+                  <height>16</height>
+                 </size>
+                </property>
+                <property name="flat">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="button_moveEngineDown">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>30</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>▼</string>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>0</width>
+                  <height>16</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -893,20 +976,7 @@ External File</string>
           </item>
          </layout>
         </item>
-        <item row="0" column="1" alignment="Qt::AlignVCenter">
-         <widget class="Line" name="line">
-          <property name="minimumSize">
-           <size>
-            <width>40</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2" alignment="Qt::AlignVCenter">
+        <item row="0" column="10" alignment="Qt::AlignVCenter">
          <widget class="QGroupBox" name="groupBox_4">
           <property name="enabled">
            <bool>false</bool>
@@ -1068,7 +1138,7 @@ External File</string>
           </layout>
          </widget>
         </item>
-        <item row="1" column="2" alignment="Qt::AlignTop">
+        <item row="2" column="10" alignment="Qt::AlignTop">
          <widget class="QGroupBox" name="groupBox_5">
           <property name="title">
            <string>iD Executable (for DOSBox)</string>

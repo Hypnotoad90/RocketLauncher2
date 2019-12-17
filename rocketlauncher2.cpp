@@ -1,4 +1,4 @@
-/*  This file (rocketlauncher2.cpp) is part of Rocket Launcher 2.0 - A cross platform
+﻿/*  This file (rocketlauncher2.cpp) is part of Rocket Launcher 2.0 - A cross platform
  *  front end for all DOOM engine source ports.
  *
  *  Copyright (C) Hypnotoad
@@ -155,6 +155,11 @@ void RocketLauncher2::initListViews()
     enginelist = new EngineListModel();
     ui->combo_Engines->setModel(enginelist);
     ui->listbox_engines->setModel(enginelist);
+
+    ui->listbox_engines->setAcceptDrops(true);
+    ui->listbox_engines->setDropIndicatorShown(true);
+    ui->listbox_engines->setDragDropMode(QAbstractItemView::InternalMove);
+    ui->listbox_engines->setDefaultDropAction(Qt::MoveAction);
 
     pwadloadlist = new QStandardItemModel;
     ui->listbox_pwadload->setModel(pwadloadlist);

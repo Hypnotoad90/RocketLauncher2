@@ -90,9 +90,12 @@ public:
     QString updateEngine(QString engine, QString path, EngineType type, EnginePic pic, bool known);
     bool EngineSet;
     void LoadEngineData();
+    bool isEmpty();
     EngineType getEngineType();
     QString DoomExePath;
     void removeRow(int row, const QModelIndex &parent = QModelIndex());
+    void moveRowDown(int row, const QModelIndex &parent = QModelIndex());
+    void moveRowUp(int row, const QModelIndex &parent = QModelIndex());
     QSettings EngineSettings;
     void SaveEngineData();
     EngineType getEngineTypeFromIndex(const QModelIndex &index);

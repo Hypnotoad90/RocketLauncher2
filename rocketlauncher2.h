@@ -122,6 +122,10 @@ private slots:
 
     void showCommandLine();
 
+    void on_button_moveEngineUp_clicked();
+
+    void on_button_moveEngineDown_clicked();
+
 private:
     Ui::RocketLauncher2 *ui;
     QString m_settingsfile;
