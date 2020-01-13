@@ -735,12 +735,12 @@ void RocketLauncher2::copyItemToFav(QDropEvent* pEvent)
 }
 
 void RocketLauncher2::on_button_addiwad_clicked()
-{
+{   
     QString title = tr("Locate an IWAD to add to the list.");
-    QString filter = tr("WAD/pk3/zip (*.WAD *.pk3 *.zip)"
-            ";;WAD Files (*.WAD)"
-            ";;pk3 Files (*.pk3)"
-            ";;zip Files (*.zip)"
+    QString filter = tr("WAD/pk3/zip (*.wad *.pk3 *.zip *.WAD *.PK3 *.ZIP)"
+            ";;WAD Files (*.wad *.WAD)"
+            ";;PK3 Files (*.pk3 *.PK3)"
+            ";;zip Files (*.zip *.ZIP)"
             ";;All files (*)");
     updateIWADs(QFileDialog::getOpenFileName(this,title,"",filter), true);
 }
