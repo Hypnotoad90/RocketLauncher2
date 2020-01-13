@@ -42,9 +42,10 @@ void saveListviewPath(QString ArrayName, QString key, QString Path, QSettings &s
 void removeSelectedFromDnDListViewSave(DndFileSystemListView *listview, QStandardItemModel *model, QString ArrayName, QString key, QSettings &settings);
 
 void copyItemToDndListView(DndFileSystemListView *source, QStandardItemModel *DestinationModel, bool checkable);
+void moveItemWithinDndListView(DndFileSystemListView *source, QStandardItemModel *DestinationModel, bool moveDown);
 
 void copyItemToDndListViewSave(DndFileSystemListView *source, QStandardItemModel *DestinationModel, bool checkable, QString array, QString key, QSettings &settings);
-
+void moveItemWithinDndListViewSave(DndFileSystemListView *source, QStandardItemModel *DestinationModel, QString array, QString key, QSettings &settings, bool moveDown = false);
 QString returnSelectedDndViewItemData(DndFileSystemListView *listview, int role = Qt::UserRole);
 
 QModelIndex getIndexOfDisplayText(QAbstractItemModel *model, QString text);

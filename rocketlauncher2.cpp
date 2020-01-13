@@ -33,6 +33,7 @@
 #include <QMimeData>
 #include <QMenu>
 #include <QShortcut>
+#include <QDesktopServices>
 
 #include "dndfilesystemlistview.h"
 #include "rocketlauncher2.h"
@@ -70,6 +71,10 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
     connect(ui->listbox_pwadload, SIGNAL(internalItemDropped(QDropEvent*)), this, SLOT(copyItemToPwads(QDropEvent*)));
     connect(ui->listbox_IWADs, SIGNAL(internalItemDropped(QDropEvent*)), this, SLOT(copyItemToIwads(QDropEvent*)));
     connect(ui->listbox_IWADs, SIGNAL(fileSystemPathDropped(QString)), this, SLOT(addToIWADs(const QString)));
+    connect(ui->listbox_fav, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(displayListRightClickMenu_Favs(const QPoint)));
+    connect(ui->listbox_IWADs, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(displayListRightClickMenu_Iwads(const QPoint)));
+    connect(ui->listbox_pwadload, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(displayListRightClickMenu_Pwads(const QPoint)));
+
     initPixmaps();
     initConfigs();
     loadsettings();
@@ -124,6 +129,7 @@ void RocketLauncher2::initPixmaps()
     enginepics->append((QPixmap(":/engine/img/retrologo.png").scaled(105,105,Qt::KeepAspectRatio))); //11 RetroDoom
     enginepics->append((QPixmap(":/engine/img/vavoom2.png").scaled(105,105,Qt::KeepAspectRatio))); //12 Vavoom
     enginepics->append((QPixmap(":/engine/img/ddlogo.png").scaled(105,105,Qt::KeepAspectRatio))); //13 DoomsDay
+    enginepics->append((QPixmap(":/engine/img/LZDLogo.png").scaled(105,105,Qt::KeepAspectRatio))); //14 LZDoom
     ui->img_engine->setPixmap(enginepics->at(0));
 }
 
@@ -142,6 +148,17 @@ void RocketLauncher2::setupAdditionalUi(){
     connect(rlmCmdLne,SIGNAL(triggered()),this,SLOT(showCommandLine()));
     connect(rlmLoadRocket,SIGNAL(triggered()),this,SLOT(on_button_loadConfigExt_clicked()));
     connect(rlmSaveRocket,SIGNAL(triggered()),this,SLOT(on_button_saveConfigExt_clicked()));
+
+    ModListboxMenu = new QMenu(this);
+    mlmOpenFileBrowser = new QAction("Show in File Browser",this);
+    mlmMoveUp = new QAction("Move Up",this);
+    mlmMoveDown = new QAction("Move Down",this);
+    mlmRemove = new QAction("Remove",this);
+    ModListboxMenu->addAction(mlmOpenFileBrowser);
+    ModListboxMenu->addAction(mlmMoveUp);
+    ModListboxMenu->addAction(mlmMoveDown);
+    ModListboxMenu->addAction(mlmRemove);
+
     adjustSize();
 
     RLOpenShortcut = new QShortcut(QKeySequence(tr("Ctrl+O", "File|Open")), this);
@@ -490,7 +507,6 @@ void RocketLauncher2::on_pushButton_3_clicked() //RUN
         QMessageBox::warning(this,"Error" ,"Engine failed to start.");
     }
 }
-
 //==========ENGINE SELECTION HANDLING=========
 
 void RocketLauncher2::on_pushButton_2_clicked() //Select Engine
@@ -541,6 +557,8 @@ void RocketLauncher2::SetEnginePic(EnginePic pic)
         ui->img_engine->setPixmap(enginepics->at(12));
     else if (pic == Pic_Doomsday)
         ui->img_engine->setPixmap(enginepics->at(13));
+    else if (pic == Pic_LZdoom)
+        ui->img_engine->setPixmap(enginepics->at(14));
 }
 
 
@@ -623,6 +641,83 @@ void RocketLauncher2::on_button_favremove_clicked()
     this->setUpdatesEnabled(true);
 
 }
+void RocketLauncher2::displayListRightClickMenu_Favs(const QPoint& pPoint){
+    displayListRightClickMenu(pPoint, ui->listbox_fav);
+}
+void RocketLauncher2::displayListRightClickMenu_Pwads(const QPoint& pPoint){
+    displayListRightClickMenu(pPoint, ui->listbox_pwadload);
+}
+void RocketLauncher2::displayListRightClickMenu_Iwads(const QPoint& pPoint){
+    displayListRightClickMenu(pPoint, ui->listbox_IWADs);
+}
+void RocketLauncher2::displayListRightClickMenu(const QPoint& pPoint, DndFileSystemListView *listview){
+    QPoint globalpos = listview->mapToGlobal(pPoint);
+    QModelIndexList indexes = listview->selectionModel()->selectedIndexes();
+    if (indexes.empty()) return;
+    QString filePath = returnSelectedDndViewItemData(listview,Qt::UserRole);
+    if (filePath.length() < 1) return;
+    if (!fileExists(filePath)) return;
+    QAction* selectedAction;
+    selectedAction = ModListboxMenu->exec(globalpos);
+    if(selectedAction) {
+        if(selectedAction == mlmOpenFileBrowser) {
+            qDebug() << "File Browser";
+            qDebug() << filePath;
+            QDir d = QFileInfo(filePath).absoluteDir();
+            QString absolute=d.absolutePath();
+            QDesktopServices::openUrl(QUrl::fromLocalFile(absolute));
+        } else if(selectedAction == mlmMoveUp) {
+            qDebug() << "Up";
+
+            if (listview == ui->listbox_fav){
+                qDebug() << "favourites";
+                moveItemWithinDndListViewSave(ui->listbox_fav, favlist,
+                                          "pwad_favs", "fav_path", settings);
+            }
+            else if (listview == ui->listbox_IWADs){
+                qDebug() << "iwads";
+                moveItemWithinDndListViewSave(ui->listbox_IWADs, iwadlist,
+                                          "iwads", "iwad_path", settings, false);
+            }
+            else if (listview == ui->listbox_pwadload){
+                qDebug() << "pwads";
+                moveItemWithinDndListView(ui->listbox_pwadload, pwadloadlist, false);
+            }
+        } else if(selectedAction == mlmMoveDown) {
+            qDebug() << "down";
+            if (listview == ui->listbox_fav){
+                qDebug() << "favourites";
+                moveItemWithinDndListViewSave(ui->listbox_fav, favlist,
+                                          "pwad_favs", "fav_path", settings, true);
+            }
+            else if (listview == ui->listbox_IWADs){
+                qDebug() << "iwads";
+                moveItemWithinDndListViewSave(ui->listbox_IWADs, iwadlist,
+                                          "iwads", "iwad_path", settings, true);
+            }
+            else if (listview == ui->listbox_pwadload){
+                qDebug() << "pwads";
+                moveItemWithinDndListView(ui->listbox_pwadload, pwadloadlist, true);
+            }
+        } else if(selectedAction == mlmRemove) {
+            qDebug() << "remove";
+
+            if (listview == ui->listbox_fav){
+                qDebug() << "favourites";
+                on_button_favremove_clicked();
+            }
+            if (listview == ui->listbox_pwadload){
+                qDebug() << "pwads";
+                on_button_remove_clicked();
+            }
+            if (listview == ui->listbox_IWADs){
+                qDebug() << "iwads";
+                on_button_deliwad_clicked();
+            }
+        }
+    }
+}
+
 
 void RocketLauncher2::copyItemToPwads(QDropEvent* pEvent)
 {

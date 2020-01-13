@@ -442,7 +442,11 @@
              </widget>
             </item>
             <item>
-             <widget class="DndFileSystemListView" name="listbox_fav"/>
+             <widget class="DndFileSystemListView" name="listbox_fav">
+              <property name="contextMenuPolicy">
+               <enum>Qt::CustomContextMenu</enum>
+              </property>
+             </widget>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -530,7 +534,11 @@
               </widget>
              </item>
              <item>
-              <widget class="DndFileSystemListView" name="listbox_IWADs"/>
+              <widget class="DndFileSystemListView" name="listbox_IWADs">
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
+               </property>
+              </widget>
              </item>
              <item>
               <layout class="QHBoxLayout" name="liblayout">
@@ -601,6 +609,9 @@
                  <width>0</width>
                  <height>0</height>
                 </size>
+               </property>
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
                </property>
                <property name="acceptDrops">
                 <bool>true</bool>
@@ -1124,6 +1135,11 @@ External File</string>
              <item>
               <property name="text">
                <string>Doomsday</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>LZdoom</string>
               </property>
              </item>
             </widget>

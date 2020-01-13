@@ -53,7 +53,8 @@ enum EnginePic
     Pic_Retro,
     Pic_Vavoom,
     Pic_Doomsday,
-    Pic_Edge
+    Pic_Edge,
+    Pic_LZdoom
 };
 
 struct EngineInfo

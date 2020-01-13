@@ -57,7 +57,6 @@ void removeSelectedFromDnDListView(DndFileSystemListView *listview, QStandardIte
 
     listview->setUpdatesEnabled(true);
 }
-
 void removeSelectedFromDnDListViewSave(DndFileSystemListView *listview, QStandardItemModel *model, QString ArrayName, QString key, QSettings &settings)
 {
     listview->setUpdatesEnabled(false);
@@ -134,7 +133,6 @@ void copyItemToDndListView(DndFileSystemListView *source, QStandardItemModel *De
     for (int i = indexes.count() - 1; i > -1; --i)
       updateDndListView(indexes.at(i).data(Qt::UserRole).toString(), DestinationModel, checkable);
 }
-
 void copyItemToDndListViewSave(DndFileSystemListView *source, QStandardItemModel *DestinationModel, bool checkable, QString array, QString key, QSettings &settings)
 {
     QModelIndexList indexes = source->selectionModel()->selectedIndexes();
@@ -145,6 +143,85 @@ void copyItemToDndListViewSave(DndFileSystemListView *source, QStandardItemModel
         if (updateDndListView(indexes.at(i).data(Qt::UserRole).toString(), DestinationModel, checkable))
             saveListviewPath(array, key, indexes.at(i).data(Qt::UserRole).toString(), settings);
     }
+}
+
+void moveItemWithinDndListView(DndFileSystemListView *source, QStandardItemModel *DestinationModel, bool moveDown = false)
+{
+    source->setUpdatesEnabled(false);
+    QModelIndexList indexes = source->selectionModel()->selectedIndexes();
+    qSort(indexes.begin(), indexes.end());
+
+    QList<QStandardItem *> rows;
+    if (moveDown){
+        for (int i = indexes.count() - 1; i > -1; --i)
+        {
+            if ((indexes.at(i).sibling(indexes.at(i).row()+1,indexes.at(i).column()).isValid()) == false){break;}
+            rows = DestinationModel->takeRow(indexes.at(i).row());
+            qDebug() <<  indexes.at(i).row();
+            DestinationModel->insertRow(indexes.at(i).row()+1,rows);
+            source->setCurrentIndex(source->model()->index(indexes.at(i).row()+1,0));
+        }
+
+    } else {
+        for (int i = indexes.count() - 1; i > -1; --i)
+        {
+            if (indexes.at(i).row()-1 < 0){break;}
+            rows = DestinationModel->takeRow(indexes.at(i).row());
+            qDebug() <<  indexes.at(i).row();
+            DestinationModel->insertRow(indexes.at(i).row()-1,rows);
+            source->setCurrentIndex(source->model()->index(indexes.at(i).row()-1,0));
+        }
+    }
+
+    source->setUpdatesEnabled(true);
+}
+void moveItemWithinDndListViewSave(DndFileSystemListView *source, QStandardItemModel *DestinationModel, QString array, QString key, QSettings &settings, bool moveDown)
+{
+    source->setUpdatesEnabled(false);
+    QModelIndexList indexes = source->selectionModel()->selectedIndexes();
+    qSort(indexes.begin(), indexes.end());
+
+    QList<QStandardItem *> rows;
+
+    if (moveDown){
+        for (int i = indexes.count() - 1; i > -1; --i)
+        {
+            if ((indexes.at(i).sibling(indexes.at(i).row()+1,indexes.at(i).column()).isValid()) == false){break;}
+            rows = DestinationModel->takeRow(indexes.at(i).row());
+            qDebug() <<  indexes.at(i).row();
+            DestinationModel->insertRow(indexes.at(i).row()+1,rows);
+            source->setCurrentIndex(source->model()->index(indexes.at(i).row()+1,0));
+            settings.beginWriteArray(array);
+            settings.remove("");
+            for (int i = 0; i < DestinationModel->rowCount(); i++)
+            {
+                settings.setArrayIndex(i);
+                settings.setValue(key, DestinationModel->item(i)->data(Qt::UserRole).toString());
+            }
+            settings.endArray();
+
+        }
+    } else {
+        for (int i = indexes.count() - 1; i > -1; --i)
+        {
+            if (indexes.at(i).row()-1 < 0){break;}
+            rows = DestinationModel->takeRow(indexes.at(i).row());
+            qDebug() <<  indexes.at(i).row();
+            DestinationModel->insertRow(indexes.at(i).row()-1,rows);
+            source->setCurrentIndex(source->model()->index(indexes.at(i).row()-1,0));
+            settings.beginWriteArray(array);
+            settings.remove("");
+            for (int i = 0; i < DestinationModel->rowCount(); i++)
+            {
+                settings.setArrayIndex(i);
+                settings.setValue(key, DestinationModel->item(i)->data(Qt::UserRole).toString());
+            }
+            settings.endArray();
+
+        }
+    }
+
+    source->setUpdatesEnabled(true);
 }
 
 QString returnSelectedDndViewItemData(DndFileSystemListView *listview, int role)
