@@ -216,6 +216,10 @@ int EngineListModel::SearchEngines(const QString name)
     return -1;
 }
 
+bool EngineListModel::isEmpty(){
+    return Engines_.isEmpty();
+}
+
 void EngineListModel::LoadEngineData()
 {
     int size = EngineSettings.beginReadArray("Engines");
@@ -242,7 +246,9 @@ void EngineListModel::LoadEngineData()
 
 void EngineListModel::SaveEngineData()
 {
+
     EngineSettings.beginWriteArray("Engines");
+    EngineSettings.clear();
     for (int i = 0; i < Engines_.count(); i++)
     {
         EngineSettings.setArrayIndex(i);
@@ -338,6 +344,24 @@ void EngineListModel::removeRow(int row, const QModelIndex &parent)
     QAbstractListModel::removeRow(row, parent);
 }
 
+void EngineListModel::moveRowDown(int row, const QModelIndex &parent)
+{
+       if  (!Engines_.isEmpty() && (row < Engines_.size()-1)){
+           Engines_.move(row, row+1);
+           QModelIndex sibling = parent.sibling(row+1, parent.column());
+           QAbstractListModel::moveRow(parent, row, sibling, row+1);
+       }
+}
+
+void EngineListModel::moveRowUp(int row, const QModelIndex &parent)
+{
+    if  (!Engines_.isEmpty() && (row > 0)){
+        Engines_.move(row, row-1);
+        QModelIndex sibling = parent.sibling(row-1, parent.column());
+        QAbstractListModel::moveRow(parent, row, sibling, row-1);
+    }
+}
+
 void EngineListModel::addDefaultEngine(QString path)
 {
     QFileInfo tempfile(path);
@@ -346,11 +370,11 @@ void EngineListModel::addDefaultEngine(QString path)
         QMessageBox::information(NULL,"Error",QString("Failed to add executable."));
         return;
     }
-
-    EngineInfo newengine = {path, "Custom engine", Engine_Default, Pic_Default};
+    QString fileName(tempfile.fileName());
+    EngineInfo newengine = {path, fileName, Engine_Default, Pic_Default};
     Engines_ << newengine;
     QMessageBox::information(NULL,"Executable Added",QString("Custom engine added!"));
-    emit updateCombo("Custom engine");
+    emit updateCombo(fileName);
     emit dataChanged(QModelIndex(),QModelIndex());
     SaveEngineData();
 }

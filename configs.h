@@ -31,7 +31,6 @@ public:
     QString name;
     QString engName;
     QString iwadName;
-    QStringList resPaths;
     QStringList filePaths;
     QVariantList filesChecked;
     QString map;
