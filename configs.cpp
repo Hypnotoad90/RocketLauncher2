@@ -121,7 +121,7 @@ RocketFile RocketLauncher2::makeConfigFromCurrent(QString name)
 {
     RocketFile rocket;
     rocket.name = name;
-    rocket.engName = enginelist->getCurrentEngine()->name;
+    if (!enginelist->isEmpty()) rocket.engName = enginelist->getCurrentEngine()->name;
     rocket.iwadName = returnSelectedDndViewItemData(ui->listbox_IWADs, Qt::DisplayRole);
 
     for (int row = 0; row < pwadloadlist->rowCount(); row++)
