@@ -1147,7 +1147,7 @@ External File</string>
            <item row="0" column="2">
             <widget class="QPushButton" name="button_enginename">
              <property name="text">
-              <string>Ok</string>
+              <string>Save</string>
              </property>
             </widget>
            </item>

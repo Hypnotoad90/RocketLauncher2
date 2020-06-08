@@ -202,8 +202,11 @@ void RocketLauncher2::on_button_selEngBrowse_clicked()
     {
         QModelIndex index = ui->listbox_engines->selectionModel()->selectedIndexes()[0];
         QString path = QFileDialog::getOpenFileName(this, "Locate executable.");
-        enginelist->setPathFromIndex(path, index);
-        ui->input_selEngPath->setText(path);
+        if (!path.isEmpty()){
+            enginelist->setPathFromIndex(path, index);
+            ui->input_selEngPath->setText(path);
+        }
+
     }
     else
     {
