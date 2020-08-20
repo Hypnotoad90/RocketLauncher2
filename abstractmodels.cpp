@@ -132,8 +132,12 @@ QString EngineListModel::addEngine(QFileInfo file)
     else if (file.baseName().compare( QString("doomretro"), Qt::CaseInsensitive) == 0)
     {
         return updateEngine("Doom Retro", file.absoluteFilePath(), Engine_Default, Pic_Retro, true);
+	 else if (file.baseName().compare( QString("chex3" || "chex"), Qt::CaseInsensitive) == 0)
+    {
+        return updateEngine("Chex Quest", file.absoluteFilePath(), Engine_ChexQuest, Pic_ChexQuest, true);
     }
     else if (file.baseName().left(6).compare(QString("dosbox"), Qt::CaseInsensitive) == 0)
+		
     {
         setupDosbox(file.absoluteFilePath());
         return "Success";
@@ -322,6 +326,7 @@ void EngineListModel::setDoomExe()
             || n.left(5).compare("hexen", Qt::CaseInsensitive) == 0
             || n.left(6).compare("strife", Qt::CaseInsensitive) == 0
             || n.left(4).compare("chex", Qt::CaseInsensitive) == 0
+			|| n.left(4).compare("chex3", Qt::CaseInsensitive) == 0
             || n.left(4).compare("hacx", Qt::CaseInsensitive) == 0 )
     {
         QMessageBox::information(NULL, "Original Exectuble Set" , QString("iD executable set to %1").arg(n));
