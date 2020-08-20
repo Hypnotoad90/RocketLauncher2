@@ -104,6 +104,8 @@ void RocketLauncher2::on_listbox_engines_clicked(const QModelIndex &index)
         ui->combo_EngPic->setCurrentText("Vavoom");
     else if (pic == Pic_Doomsday)
         ui->combo_EngPic->setCurrentText("Doomsday");
+	else if (pic == Pic_ChexQuest)
+        ui->combo_EngPic->setCurrentText("Chex Quest");
 
 }
 
@@ -163,8 +165,7 @@ void RocketLauncher2::on_combo_EngType_currentTextChanged(const QString &arg1)
     else if (arg1 == "Oldschool")
         enginelist->setTypeFromIndex(Engine_Oldschool, index);
     else if (arg1 == "ZDoom")
-        enginelist->setTypeFromIndex(Engine_ZDoom, index);
-}
+        enginelist->setTypeFromIndex(Engine_ZDoom, index));
 
 void RocketLauncher2::on_combo_EngPic_currentTextChanged(const QString &arg1)
 {
@@ -200,6 +201,8 @@ void RocketLauncher2::on_combo_EngPic_currentTextChanged(const QString &arg1)
         enginelist->setPicFromIndex(Pic_ZDaemon, index);
     else if (arg1 == "Zdoom")
         enginelist->setPicFromIndex(Pic_Zdoom, index);
+	else if (arg1 == "Chex Quest")
+        enginelist->setPicFromIndex(Pic_ChexQuest, index);
 
     SetEnginePic(enginelist->getCurrentEngine()->EngineImage);
 }

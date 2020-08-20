@@ -111,6 +111,7 @@ void RocketLauncher2::initPixmaps()
     enginepics->append((QPixmap(":/engine/img/retrologo.png").scaled(105,105,Qt::KeepAspectRatio))); //11 RetroDoom
     enginepics->append((QPixmap(":/engine/img/vavoom2.png").scaled(105,105,Qt::KeepAspectRatio))); //12 Vavoom
     enginepics->append((QPixmap(":/engine/img/ddlogo.png").scaled(105,105,Qt::KeepAspectRatio))); //13 DoomsDay
+	enginepics->append((QPixmap(":/engine/img/chexlogo.png").scaled(105,105,Qt::KeepAspectRatio))); //14 Chex Quest
     ui->img_engine->setPixmap(enginepics->at(0));
 }
 
@@ -510,6 +511,8 @@ void RocketLauncher2::SetEnginePic(EnginePic pic)
     else if (pic == Pic_Vavoom)
         ui->img_engine->setPixmap(enginepics->at(12));
     else if (pic == Pic_Doomsday)
+        ui->img_engine->setPixmap(enginepics->at(13));
+	else if (pic == Pic_ChexQuest)
         ui->img_engine->setPixmap(enginepics->at(13));
 }
 
