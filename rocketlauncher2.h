@@ -29,7 +29,10 @@
 #include <QList>
 #include <QPixmap>
 #include <QSettings>
+#include <QShortcut>
 #include "configs.h"
+#include "commandlinedialog.h"
+#include "dndfilesystemlistview.h"
 
 namespace Ui {
 class RocketLauncher2;
@@ -43,6 +46,9 @@ public:
     explicit RocketLauncher2(QWidget *parent = 0, int argc = 0, char *argv[] = 0);
     ~RocketLauncher2();
 
+protected:
+     void closeEvent(QCloseEvent *event);
+
 private slots:
 
     void on_pushButton_3_clicked();
@@ -51,7 +57,7 @@ private slots:
 
     void on_combo_Engines_currentIndexChanged(int index);
 
-    void addpwad(QString filepath);
+    bool addpwad(QString filepath);
 
     void on_button_add_clicked();
 
@@ -67,8 +73,6 @@ private slots:
 
     void addToIWADs(const QString filepath);
 
-    void addToRes(const QString filepath);
-
     //void deleteFromFavorites(const int index);
 
     void on_button_favadd_clicked();
@@ -81,15 +85,15 @@ private slots:
 
     void copyItemToIwads(QDropEvent* pEvent);
 
-    void copyItemToRes(QDropEvent* pEvent);
+
+    void displayListRightClickMenu_Pwads(const QPoint& pPoint);
+    void displayListRightClickMenu_Iwads(const QPoint& pPoint);
+    void displayListRightClickMenu_Favs(const QPoint& pPoint);
+    void displayListRightClickMenu(const QPoint& pPoint, DndFileSystemListView *listview);
 
     void on_button_addiwad_clicked();
 
     void on_button_deliwad_clicked();
-
-    void on_button_addres_clicked();
-
-    void on_button_delres_clicked();
 
     void on_listbox_IWADs_clicked(const QModelIndex &index);
 
@@ -123,6 +127,12 @@ private slots:
 
     void on_button_idExeBrowse_clicked();
 
+    void showCommandLine();
+
+    void on_button_moveEngineUp_clicked();
+
+    void on_button_moveEngineDown_clicked();
+
 private:
     Ui::RocketLauncher2 *ui;
     QString m_settingsfile;
@@ -135,19 +145,30 @@ private:
     EngineListModel *enginelist;
     QStandardItemModel *pwadloadlist;
     QStandardItemModel *favlist;
-    QStandardItemModel *reslist;
     ConfigListModel *conflist;
-    QStringList genCommandline();
+    CommandLineDialog *cmdDialog;
+    QStringList genCommandline(bool displayOnly);
     QProcess *process;
     void SetEnginePic(EnginePic pic);
     void initPixmaps();
     QList<QPixmap> *enginepics;
     QSettings settings;
+    QMenu *RLMenu;
+    QMenu *ModListboxMenu;
+    QShortcut *RLOpenShortcut;
+    QShortcut *RLSaveShortcut;
+    QAction *rlmCmdLne;
+    QAction *rlmLoadRocket;
+    QAction *rlmSaveRocket;
+    QAction *mlmOpenFileBrowser;
+    QAction *mlmMoveUp;
+    QAction *mlmMoveDown;
+    QAction *mlmRemove;
     void parseCmdLine(int argc, char *argv[]);
     void updateFavs(QString filepath, bool save);
     void updateIWADs(QString filepath, bool save);
-    void updateres(QString filepath, bool save);
     void initListViews();
+    void setupAdditionalUi();
     QStringList genDOSBoxcmd();
 
     //configs
@@ -155,10 +176,13 @@ private:
     void loadExtConfig(QString path);
     void applyConfig(RocketFile *rocket);
     void initConfigs();
+    void autoLoadConfig();
     void saveToGlobal(RocketFile &rocket);
+    void saveToAutoLoad();
     void saveToGlobalFromList(RocketFile *rocket, int index);
     void saveToExternal(RocketFile &rocket, QString name);
     QSettings ConfigSettings;
+    QSettings AutoLoad;
 
     QString pwadFilter;
 };
