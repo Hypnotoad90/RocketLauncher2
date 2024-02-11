@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>696</width>
-    <height>501</height>
+    <width>896</width>
+    <height>637</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -23,12 +23,22 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Rocket Launcher 2.0</string>
+   <string>Rocket Launcher</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/engine/img/rocket.ico</normaloff>:/engine/img/rocket.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_5">
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget_rlauncher">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="toolTip">
        <string/>
       </property>
@@ -36,10 +46,31 @@
        <number>0</number>
       </property>
       <widget class="QWidget" name="tab_launchwad">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <attribute name="title">
         <string>Launch Wad</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4" rowstretch="3,6,1">
+        <property name="topMargin">
+         <number>10</number>
+        </property>
+        <property name="rightMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>10</number>
+        </property>
+        <property name="horizontalSpacing">
+         <number>6</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>0</number>
+        </property>
         <item row="0" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,2,1">
           <item>
@@ -145,7 +176,7 @@
             <property name="title">
              <string>Launch Engine!</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="3,1">
+            <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="3,0">
              <item>
               <layout class="QVBoxLayout" name="verticalLayout">
                <item>
@@ -358,7 +389,7 @@
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
-                   <height>75</height>
+                   <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
@@ -373,17 +404,28 @@
                 </widget>
                </item>
                <item>
-                <widget class="QCheckBox" name="check_showcmdline">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Show Command Line</string>
-                 </property>
-                </widget>
+                <layout class="QHBoxLayout" name="horizontalLayout_11">
+                 <item>
+                  <spacer name="horizontalSpacer_2">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="button_rocketmenu">
+                   <property name="text">
+                    <string>Rocket Menu</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </item>
               </layout>
              </item>
@@ -400,7 +442,11 @@
              </widget>
             </item>
             <item>
-             <widget class="DndFileSystemListView" name="listbox_fav"/>
+             <widget class="DndFileSystemListView" name="listbox_fav">
+              <property name="contextMenuPolicy">
+               <enum>Qt::CustomContextMenu</enum>
+              </property>
+             </widget>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -441,10 +487,40 @@
         </item>
         <item row="1" column="0">
          <widget class="QGroupBox" name="wadGroupBox">
-          <property name="title">
-           <string>Files To Load (external and internal drag and drop supported)</string>
+          <property name="enabled">
+           <bool>true</bool>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="1,1,2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="2,5">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
             <layout class="QVBoxLayout" name="livlayout1">
              <property name="spacing">
@@ -458,12 +534,16 @@
               </widget>
              </item>
              <item>
-              <widget class="DndFileSystemListView" name="listbox_IWADs"/>
+              <widget class="DndFileSystemListView" name="listbox_IWADs">
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
+               </property>
+              </widget>
              </item>
              <item>
               <layout class="QHBoxLayout" name="liblayout">
                <property name="spacing">
-                <number>20</number>
+                <number>10</number>
                </property>
                <item alignment="Qt::AlignLeft">
                 <widget class="QPushButton" name="button_addiwad">
@@ -502,66 +582,13 @@
             </layout>
            </item>
            <item>
-            <layout class="QVBoxLayout" name="livlayout2">
-             <item>
-              <widget class="QLabel" name="label_res">
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Common Resources&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="DndFileSystemListView" name="listbox_res"/>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="libhlayout1">
-               <property name="spacing">
-                <number>64</number>
-               </property>
-               <item alignment="Qt::AlignLeft">
-                <widget class="QPushButton" name="button_addres">
-                 <property name="minimumSize">
-                  <size>
-                   <width>100</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>80</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Add Resource</string>
-                 </property>
-                </widget>
-               </item>
-               <item alignment="Qt::AlignRight">
-                <widget class="QPushButton" name="button_delres">
-                 <property name="minimumSize">
-                  <size>
-                   <width>30</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>30</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Del</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </item>
-           <item>
             <layout class="QVBoxLayout" name="verticalLayout_8">
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QLabel" name="label_pwads">
                <property name="text">
@@ -571,6 +598,21 @@
              </item>
              <item>
               <widget class="DndFileSystemListView" name="listbox_pwadload">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="sizeIncrement">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
+               </property>
                <property name="acceptDrops">
                 <bool>true</bool>
                </property>
@@ -607,7 +649,7 @@
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
-                   <width>88</width>
+                   <width>100</width>
                    <height>20</height>
                   </size>
                  </property>
@@ -711,14 +753,36 @@
           <property name="bottomMargin">
            <number>60</number>
           </property>
-          <item alignment="Qt::AlignVCenter">
+          <item>
            <widget class="QGroupBox" name="groupBox_3">
             <property name="title">
              <string>Save</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_7">
-             <item row="2" column="1" alignment="Qt::AlignHCenter">
+             <item row="0" column="0" colspan="2" alignment="Qt::AlignTop">
+              <widget class="QLabel" name="label_nameConf">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Name Your Config&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" colspan="2" alignment="Qt::AlignTop">
+              <widget class="QLineEdit" name="input_confName"/>
+             </item>
+             <item row="2" column="1">
               <widget class="QPushButton" name="button_saveConfigExt">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="minimumSize">
                 <size>
                  <width>100</width>
@@ -731,7 +795,7 @@ External File</string>
                </property>
               </widget>
              </item>
-             <item row="2" column="0" alignment="Qt::AlignHCenter">
+             <item row="2" column="0">
               <widget class="QPushButton" name="button_addConfToFav">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -750,22 +814,6 @@ External File</string>
 Favorites </string>
                </property>
               </widget>
-             </item>
-             <item row="0" column="0" colspan="2" alignment="Qt::AlignTop">
-              <widget class="QLabel" name="label_nameConf">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Name Your Config&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0" colspan="2" alignment="Qt::AlignTop">
-              <widget class="QLineEdit" name="input_confName"/>
              </item>
             </layout>
            </widget>
@@ -817,7 +865,7 @@ External File</string>
         <property name="verticalSpacing">
          <number>0</number>
         </property>
-        <item row="0" column="0" rowspan="2">
+        <item row="0" column="0" rowspan="3">
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
            <widget class="QLabel" name="label_engList">
@@ -827,7 +875,90 @@ External File</string>
            </widget>
           </item>
           <item>
-           <widget class="QListView" name="listbox_engines"/>
+           <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <item>
+             <widget class="QListView" name="listbox_engines"/>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_9">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <property name="sizeConstraint">
+               <enum>QLayout::SetDefaultConstraint</enum>
+              </property>
+              <item>
+               <widget class="QPushButton" name="button_moveEngineUp">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>30</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>▲</string>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>0</width>
+                  <height>16</height>
+                 </size>
+                </property>
+                <property name="flat">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="button_moveEngineDown">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>30</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>▼</string>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>0</width>
+                  <height>16</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -856,20 +987,7 @@ External File</string>
           </item>
          </layout>
         </item>
-        <item row="0" column="1" alignment="Qt::AlignVCenter">
-         <widget class="Line" name="line">
-          <property name="minimumSize">
-           <size>
-            <width>40</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2" alignment="Qt::AlignVCenter">
+        <item row="0" column="10" alignment="Qt::AlignVCenter">
          <widget class="QGroupBox" name="groupBox_4">
           <property name="enabled">
            <bool>false</bool>
@@ -1019,12 +1137,24 @@ External File</string>
                <string>Doomsday</string>
               </property>
              </item>
+             <item>
+              <property name="text">
+               <string>LZdoom</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="button_enginename">
+             <property name="text">
+              <string>Save</string>
+             </property>
             </widget>
            </item>
           </layout>
          </widget>
         </item>
-        <item row="1" column="2" alignment="Qt::AlignTop">
+        <item row="2" column="10" alignment="Qt::AlignTop">
          <widget class="QGroupBox" name="groupBox_5">
           <property name="title">
            <string>iD Executable (for DOSBox)</string>
@@ -1069,6 +1199,8 @@ External File</string>
    <header>dndfilesystemlistview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

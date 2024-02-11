@@ -32,21 +32,17 @@ Rocket Launcher 2.0 also features a new tab allowing you to configure each engin
 
 ### Qt Framework
 
-This allows for this project to be cross platform, including support for Linux and OSX. For windows I provide a static build, which means it's provided as a single executable with no additional DLL's required or frameworks to install.
+This allows for this project to be cross platform, including support for Linux and Windows.
 
 ### Installation
 
-#### Windows
+#### Windows (7 or later)
 
-Download executable here: https://github.com/Hypnotoad90/RocketLauncher2/releases/download/0.1.0.1/RocketLauncher2_v0101.zip
+Download executable here: https://github.com/paynworth/RocketLauncher2/releases/download/v1.1/RocketLauncherPW_v1.1.zip
 
 #### Linux
 
 No binaries available as of yet. To compile, simply grab Qt5-default package, then run qmake, followed by make, on the source code.
-
-#### Mac
-
-Coming soon.
 
 ### Thanks to:
 <br>

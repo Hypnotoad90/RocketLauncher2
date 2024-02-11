@@ -18,15 +18,18 @@ SOURCES += main.cpp\
     dndfilesystemlistview.cpp \
     hyp_commonfunc.cpp \
     configs.cpp \
-    enginesetup.cpp
+    enginesetup.cpp \
+    commandlinedialog.cpp
 
 HEADERS  += rocketlauncher2.h \
     abstractmodels.h \
     dndfilesystemlistview.h \
     hyp_commonfunc.h \
-    configs.h
+    configs.h \
+    commandlinedialog.h
 
-FORMS    += rocketlauncher2.ui
+FORMS    += rocketlauncher2.ui \
+    commandlinedialog.ui
 
 RESOURCES += \
     resources.qrc
