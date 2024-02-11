@@ -67,6 +67,7 @@ RocketLauncher2::RocketLauncher2(QWidget *parent, int argc, char *argv[]) :
     connect(ui->listbox_res, SIGNAL(fileSystemPathDropped(QString)), this, SLOT(addToRes(const QString)));
     connect(ui->listbox_res, SIGNAL(internalItemDropped(QDropEvent*)), this, SLOT(copyItemToRes(QDropEvent*)));
     initPixmaps();
+    initSounds();
     initConfigs();
     loadsettings();
     enginelist->LoadEngineData();
@@ -112,6 +113,12 @@ void RocketLauncher2::initPixmaps()
     enginepics->append((QPixmap(":/engine/img/vavoom2.png").scaled(105,105,Qt::KeepAspectRatio))); //12 Vavoom
     enginepics->append((QPixmap(":/engine/img/ddlogo.png").scaled(105,105,Qt::KeepAspectRatio))); //13 DoomsDay
     ui->img_engine->setPixmap(enginepics->at(0));
+}
+
+void RocketLauncher2::initSounds()
+{
+	launchRocketSound.setSource(QUrl("qrc:/sounds/LaunchRocket.wav"));
+	launchRocketSound.setVolume(0.6);
 }
 
 void RocketLauncher2::initListViews()
@@ -446,6 +453,8 @@ void RocketLauncher2::on_pushButton_3_clicked() //RUN
         showargs = cmd.join("\n");
         QMessageBox::information(this,"Command Line" ,showargs);
     }
+
+    launchRocketSound.play();
 
     QFileInfo engineDir(enginefile);
     QDir::setCurrent(engineDir.absolutePath());

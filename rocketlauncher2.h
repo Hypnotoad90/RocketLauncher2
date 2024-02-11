@@ -28,6 +28,7 @@
 #include <QStandardItemModel>
 #include <QList>
 #include <QPixmap>
+#include <QSoundEffect>
 #include <QSettings>
 #include "configs.h"
 
@@ -141,7 +142,9 @@ private:
     QProcess *process;
     void SetEnginePic(EnginePic pic);
     void initPixmaps();
+    void initSounds();
     QList<QPixmap> *enginepics;
+    QSoundEffect launchRocketSound;
     QSettings settings;
     void parseCmdLine(int argc, char *argv[]);
     void updateFavs(QString filepath, bool save);

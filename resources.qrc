@@ -16,4 +16,7 @@
         <file>img/vavoom2.png</file>
         <file>img/Zdaemonlogo.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>sounds/LaunchRocket.wav</file>
+    </qresource>
 </RCC>
